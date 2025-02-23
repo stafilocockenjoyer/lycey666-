@@ -15,7 +15,7 @@
             line-height: 1.6;
             transition: background 0.3s, color 0.3s;
         }
-        /* Светлая тема (по умолчанию) */
+        /* Светлая тема */
         body.light {
             background: #f0f4f8;
             color: #4a5e6e;
@@ -35,7 +35,7 @@
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 2px solid #a3bffa;
-            min-height: 100px; /* Минимальная высота для пустого блока */
+            min-height: 100px;
         }
         body.light .news h2 {
             color: #6b7280;
@@ -74,35 +74,43 @@
         body.light a:hover {
             color: #a3bffa;
         }
+        body.light .tab-btn {
+            background: #e0e7ff;
+            color: #4a5e6e;
+        }
+        body.light .tab-btn.active {
+            background: #a3bffa;
+            color: #fff;
+        }
 
-        /* Тёмная тема */
+        /* Тёмная тема (по умолчанию) */
         body.dark {
-            background: #1e293b;
-            color: #e2e8f0;
+            background: #1a1a1a;
+            color: #ffffff;
         }
         body.dark header {
-            background: linear-gradient(to right, #4b5e7a, #64748b);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #1f1f1f, #666666);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
         body.dark .card {
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background: rgba(40, 40, 40, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         body.dark .card h2 {
-            color: #94a3b8;
+            color: #ffffff;
         }
         body.dark .news {
-            background: rgba(30, 41, 59, 0.95);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border: 2px solid #a5b4fc;
-            min-height: 100px; /* Минимальная высота для пустого блока */
+            background: rgba(40, 40, 40, 0.95);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 2px solid #666666;
+            min-height: 100px;
         }
         body.dark .news h2 {
-            color: #94a3b8;
+            color: #ffffff;
         }
         body.dark .news-ticker a {
-            color: #e2e8f0;
-            background: rgba(165, 180, 252, 0.2);
+            color: #e0e0e0;
+            background: rgba(100, 100, 100, 0.4);
             padding: 15px 20px;
             border-radius: 15px;
             margin-right: 15px;
@@ -114,25 +122,33 @@
             font-size: 1.4em;
         }
         body.dark .news-ticker a:hover {
-            color: #fff;
-            background: #a5b4fc;
+            color: #ffffff;
+            background: #888888;
         }
         body.dark .card p, body.dark .card ul {
-            color: #cbd5e1;
+            color: #ffffff;
         }
         body.dark .highlight {
-            background: #475569;
-            color: #e2e8f0;
+            background: #333333;
+            color: #ffffff;
         }
         body.dark footer {
-            background: #0f172a;
-            color: #e2e8f0;
+            background: #121212;
+            color: #ffffff;
         }
         body.dark a {
-            color: #94a3b8;
+            color: #ffffff;
         }
         body.dark a:hover {
-            color: #a5b4fc;
+            color: #cccccc;
+        }
+        body.dark .tab-btn {
+            background: #4a4a4a;
+            color: #ffffff;
+        }
+        body.dark .tab-btn.active {
+            background: #666666;
+            color: #ffffff;
         }
 
         /* Общие стили */
@@ -162,7 +178,7 @@
             white-space: nowrap;
             overflow: hidden;
             position: relative;
-            flex-grow: 1; /* Растягивается, чтобы заполнить доступное пространство */
+            flex-grow: 1;
         }
         .news-ticker div {
             display: inline-block;
@@ -187,6 +203,9 @@
             padding: 20px;
             border-radius: 10px;
             transition: transform 0.3s ease, background 0.3s;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -203,7 +222,7 @@
             padding-left: 20px;
         }
         ul li:before {
-            content: "➜ ";
+            content: "● ";
             color: #a3bffa;
         }
         .highlight {
@@ -225,6 +244,43 @@
             font-size: 0.9em;
         }
 
+        /* Стили для вкладок */
+        .tabs {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .tab-btn.active {
+            font-weight: bold;
+        }
+        .tab-content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Уникальные группы вкладок */
+        .tab-group-1, .tab-group-2, .tab-group-3 {
+            position: relative;
+        }
+
         /* Кнопка переключения темы */
         .theme-toggle {
             position: fixed;
@@ -238,9 +294,92 @@
             cursor: pointer;
             font-size: 1em;
             transition: background 0.3s;
+            z-index: 1002;
         }
         .theme-toggle:hover {
             background: #94a3b8;
+        }
+
+        /* Всплывающее окно */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2d3748;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            width: 50%;
+            height: 90%;
+            max-width: 600px;
+            max-height: 800px;
+            text-align: center;
+            display: none; /* Скрыто по умолчанию */
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+        .popup.active {
+            display: block; /* Показываем только при активации */
+            opacity: 1;
+        }
+        .popup h3 {
+            margin-bottom: 25px;
+            color: #ffffff;
+            font-size: 2em;
+        }
+        .popup ul {
+            list-style: none;
+            padding: 0;
+        }
+        .popup li {
+            margin-bottom: 20px;
+            color: #e0e0e0;
+            font-size: 1.3em;
+        }
+        .popup button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            background: #666666;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+        .popup button:hover {
+            background: #888888;
+        }
+
+        /* Затемнение фона под окном */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+        }
+        .overlay.active {
+            display: block;
+        }
+
+        /* Блокировка интерактивности контента под окном */
+        body.popup-active .news-ticker a,
+        body.popup-active .tab-btn {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Основной контент */
+        .news, .container {
+            position: relative;
+            z-index: 1;
         }
 
         @media (max-width: 768px) {
@@ -258,14 +397,36 @@
                 width: 200px;
             }
             .news {
-                min-height: 80px; /* Уменьшил минимальную высоту для мобильных */
+                min-height: 80px;
+            }
+            .card {
+                height: 300px;
+            }
+            .tab-btn {
+                padding: 8px 15px;
+                margin-right: 5px;
+            }
+            .tabs {
+                flex-wrap: wrap;
+            }
+            .popup {
+                width: 90%;
+                height: 80%;
+                padding: 20px;
+            }
+            .popup h3 {
+                font-size: 1.5em;
+            }
+            .popup li {
+                font-size: 1em;
             }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="light">
-    <button class="theme-toggle" onclick="toggleTheme()">Тёмная тема</button>
+<body class="dark">
+    <div class="overlay" id="popupOverlay"></div>
+    <button class="theme-toggle" onclick="toggleTheme()">Светлая тема</button>
     <header>
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
     </header>
@@ -274,71 +435,148 @@
         <h2>Новости лицея</h2>
         <div class="news-ticker">
             <div>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Дамир Чумакаев из 10А застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Главная прошмандовка лицея ЗАЛЕТЕЛА — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" target="_blank">Дамир Чумакаев застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — читать далее...</a></h3>
                 <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Катя из 9В спалила класс на химии — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Учитель физры застукан с сигаретой в туалете — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Санёк из 7Г угнал велик у завуча — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — читать далее...</a></h3>
                 <!-- Дублируем новости для непрерывного заполнения -->
-                <h3><a href="https://rt.pornhub.com" target="_blank">Дамир Чумакаев из 10А застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Главная прошмандовка лицея ЗАЛЕТЕЛА — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" target="_blank">Дамир Чумакаев застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — читать далее...</a></h3>
                 <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Катя из 9В спалила класс на химии — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Учитель физры застукан с сигаретой в туалете — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Санёк из 7Г угнал велик у завуча — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — читать далее...</a></h3>
             </div>
         </div>
     </div>
 
     <div class="container">
-        <div class="card">
-            <h2>О нас</h2>
-            <p>
-                Наш лицей — это место, где раскрываются таланты и рождаются мечты. Мы гордимся традицией качественного образования и выдающимися выпускниками: заслуженными учителями, врачами, учёными, политиками, спортсменами, музыкантами, художниками, писателями и артистами. Здесь традиции идут рука об руку с инновациями.
-            </p>
-            <p class="highlight">
-                Новинка 2025 года: VR-лаборатория для изучения физики и биологии в виртуальной реальности!
-            </p>
-            <p>
-                Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.
-            </p>
+        <div class="card tab-group-1">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
+                <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
+                <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="about1" class="tab-content active">
+                    <h2>О нас</h2>
+                    <p>
+                        Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.
+                    </p>
+                </div>
+                <div id="admission1" class="tab-content">
+                    <h2>Информация о приёме</h2>
+                    <p>
+                        Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a>
+                    </p>
+                </div>
+                <div id="education1" class="tab-content">
+                    <h2>Образовательные услуги</h2>
+                    <p>
+                        Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>Расписание и жизнь лицея</h2>
-            <p>
-                Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:
-            </p>
-            <ul>
-                <li>1 смена: 8:00 - 13:05</li>
-                <li>2 смена: 14:00 - 19:05</li>
-            </ul>
-            <p class="highlight">
-                Эксклюзив: Клуб "Шуклинские исследователи" — учащиеся создают роботов и участвуют в международных хакатонах!
-            </p>
+        <div class="card tab-group-2">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание и жизнь лицея</button>
+                <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
+                <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="schedule2" class="tab-content active">
+                    <h2>Расписание и жизнь лицея</h2>
+                    <p>
+                        Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:
+                    </p>
+                    <ul>
+                        <li>1 смена: 8:00 - 13:05</li>
+                        <li>2 смена: 14:00 - 19:05</li>
+                    </ul>
+                </div>
+                <div id="founder2" class="tab-content">
+                    <h2>Учредитель</h2>
+                    <p>
+                        Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: office@admin.gorny.ru
+                    </p>
+                </div>
+                <div id="support2" class="tab-content">
+                    <h2>Поддержка учащихся</h2>
+                    <p>
+                        Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="card contact-info">
-            <h2>Контакты</h2>
-            <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
-            <p><strong>Телефоны:</strong></p>
-            <ul>
-                <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
-                <li>Методкабинет: 8(388)22-2-50-48</li>
-                <li>Вахта: 2-93-83</li>
-            </ul>
-            <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
-            <p>Задайте вопрос директору: <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
-            <p class="highlight">
-                Следите за нами в Telegram: @Licey6_GA — анонсы мероприятий и новости!
-            </p>
+        <div class="card contact-info tab-group-3">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
+                <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="contacts3" class="tab-content active">
+                    <h2>Контакты</h2>
+                    <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
+                    <p><strong>Телефоны:</strong></p>
+                    <ul>
+                        <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
+                        <li>Методкабинет: 8(388)22-2-50-48</li>
+                        <li>Вахта: 2-93-83</li>
+                    </ul>
+                    <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+                    <p>Задайте вопрос директору: <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+                </div>
+                <div id="hotline3" class="tab-content">
+                    <h2>Горячая линия</h2>
+                    <p>
+                        Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer>
         <p>© 2025 Лицей №6 им. И.З.Шуклина. Будущее начинается здесь.</p>
+        <p>Следите за нами в Telegram: <a href="https://t.me/Licey6_GA">@Licey6_GA</a> — анонсы мероприятий и новости!</p>
     </footer>
+
+    <!-- Всплывающее окно -->
+    <div class="popup" id="welcomePopup">
+        <h3>Обновления сайта за 23 февраля 2025</h3>
+        <ul>
+            <li>Улучшена читаемость текста новостей в тёмной теме — теперь он более светлый и контрастный.</li>
+            <li>Строка "Следите за нами в Telegram" перенесена в футер сайта для удобства навигации.</li>
+            <li>Добавлено всплывающее окно с обновлениями, которое теперь появляется при каждом открытии страницы.</li>
+            <li>Окно обновлений увеличено до почти полного экрана по вертикали и половины по горизонтали.</li>
+            <li>Исправлена проблема с неработающими кнопками под всплывающим окном с помощью CSS-блокировки.</li>
+            <li>Тёмная тема установлена по умолчанию для улучшения восприятия сайта в ночное время.</li>
+            <li>Добавлена прокрутка в окне обновлений для длинных списков изменений.</li>
+            <li>Добавлена новая электронная услуга «Прием обращений граждан» для удобства пользователей.</li>
+            <li>Добавлена информация об учредителе — администрации города Горно-Алтайска.</li>
+            <li>Добавлены контакты отдела по надзору и контролю Министерства образования и науки РА.</li>
+            <li>Добавлена возможность оценки условий образовательных услуг через QR-код.</li>
+            <li>Добавлена информация о воспитательной системе лицея с ссылкой на подробности.</li>
+            <li>Добавлены телефоны доверия для поддержки учащихся и родителей.</li>
+            <li>Добавлена телефонная линия «Ребёнок в опасности» для оперативной помощи.</li>
+            <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
+            <li>Добавлены телефоны горячей линии по вопросам незаконных сборов денежных средств.</li>
+            <li>Добавлена информация о госуслугах в электронном виде через ЕПГУ.</li>
+            <li>Добавлена ссылка на официальный сайт государственных учреждений.</li>
+            <li>Добавлена информация о кружке "Рободетки" для учащихся 3-4 классов.</li>
+            <li>Добавлены видеоролики "Позитивное родительство" для родителей.</li>
+            <li>Добавлены сайты о безопасности с полезным контентом для детей и родителей.</li>
+            <li>Добавлена схема безопасного маршрута учащихся лицея.</li>
+            <li>Добавлена информация о работе ресурсного центра "Интелроб" в 2020-2021 учебном году.</li>
+            <li>Цвет окна обновлений изменён на тёмно-серый (#2d3748), идеально подходящий для тёмной темы.</li>
+        </ul>
+        <button onclick="closePopup()">Закрыть</button>
+    </div>
 
     <script>
         function toggleTheme() {
@@ -354,6 +592,50 @@
                 button.textContent = 'Тёмная тема';
             }
         }
+
+        function openTab(evt, tabName, groupName) {
+            const tabContents = document.querySelectorAll(`.${groupName} .tab-content`);
+            const tabButtons = document.querySelectorAll(`.${groupName} .tab-btn`);
+
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Управление всплывающим окном
+        function showPopup() {
+            document.getElementById('welcomePopup').classList.add('active');
+            document.getElementById('popupOverlay').classList.add('active');
+            document.body.classList.add('popup-active'); // Блокируем кнопки
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('welcomePopup');
+            const overlay = document.getElementById('popupOverlay');
+            popup.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.classList.remove('popup-active'); // Разблокируем кнопки
+        }
+
+        // Активировать первую вкладку в каждом окне и показывать окно обновлений
+        document.addEventListener('DOMContentLoaded', () => {
+            const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3'];
+            groups.forEach(group => {
+                const firstTabButton = document.querySelector(`.${group} .tab-btn`);
+                if (firstTabButton) {
+                    firstTabButton.click();
+                }
+            });
+
+            // Показать всплывающее окно при каждом открытии
+            showPopup();
+        });
     </script>
 </body>
 </html>
