@@ -13,9 +13,10 @@
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
-            transition: background 0.3s, color 0.3s;
+            position: relative;
+            min-height: 100vh;
+            transition: color 0.3s;
         }
-        /* Светлая тема */
         body.light {
             background: #f0f4f8;
             color: #4a5e6e;
@@ -27,6 +28,8 @@
         body.light .card {
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            padding: 25px;
         }
         body.light .card h2 {
             color: #6b7280;
@@ -35,7 +38,10 @@
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 2px solid #a3bffa;
+            border-radius: 10px;
             min-height: 100px;
+            padding: 25px 60px;
+            position: relative;
         }
         body.light .news h2 {
             color: #6b7280;
@@ -83,34 +89,48 @@
             color: #fff;
         }
 
-        /* Тёмная тема (по умолчанию) */
         body.dark {
-            background: #1a1a1a;
-            color: #ffffff;
+            background: none;
+            color: #e0e0e0;
+        }
+        body.dark:before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%);
+            z-index: -1;
         }
         body.dark header {
-            background: linear-gradient(to right, #1f1f1f, #666666);
+            background: transparent;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
         body.dark .card {
-            background: rgba(40, 40, 40, 0.9);
+            background: #2a2a2a;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 25px;
         }
         body.dark .card h2 {
-            color: #ffffff;
+            color: #cccccc;
         }
         body.dark .news {
-            background: rgba(40, 40, 40, 0.95);
+            background: #333333;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            border: 2px solid #666666;
+            border: 2px solid #404040;
+            border-radius: 10px;
             min-height: 100px;
+            padding: 25px 60px;
+            position: relative;
         }
         body.dark .news h2 {
-            color: #ffffff;
+            color: #cccccc;
         }
         body.dark .news-ticker a {
             color: #e0e0e0;
-            background: rgba(100, 100, 100, 0.4);
+            background: #404040;
             padding: 15px 20px;
             border-radius: 15px;
             margin-right: 15px;
@@ -123,38 +143,38 @@
         }
         body.dark .news-ticker a:hover {
             color: #ffffff;
-            background: #888888;
+            background: #4d4d4d;
         }
         body.dark .card p, body.dark .card ul {
-            color: #ffffff;
+            color: #e0e0e0;
         }
         body.dark .highlight {
-            background: #333333;
-            color: #ffffff;
+            background: #404040;
+            color: #e0e0e0;
         }
         body.dark footer {
-            background: #121212;
-            color: #ffffff;
+            background: transparent;
+            color: #e0e0e0;
         }
         body.dark a {
-            color: #ffffff;
-        }
-        body.dark a:hover {
             color: #cccccc;
         }
-        body.dark .tab-btn {
-            background: #4a4a4a;
+        body.dark a:hover {
             color: #ffffff;
         }
+        body.dark .tab-btn {
+            background: #333333;
+            color: #e0e0e0;
+        }
         body.dark .tab-btn.active {
-            background: #666666;
+            background: #404040;
             color: #ffffff;
         }
 
-        /* Общие стили */
         header {
             padding: 40px;
             text-align: center;
+            position: relative;
         }
         header h1 {
             font-size: 2.5em;
@@ -164,11 +184,10 @@
         .news {
             max-width: 1000px;
             margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         .news h2 {
             margin-bottom: 15px;
@@ -180,17 +199,21 @@
             position: relative;
             flex-grow: 1;
         }
-        .news-ticker div {
+        .ticker-content {
             display: inline-block;
-            animation: marquee 50s linear infinite;
+            animation: ticker-scroll 30s linear infinite;
+        }
+        @keyframes ticker-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
         .news-ticker h3 {
             display: inline-block;
             line-height: 1.5;
+            margin-right: 15px;
         }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        .news-ticker:hover .ticker-content {
+            animation-play-state: paused;
         }
         .container {
             max-width: 1000px;
@@ -200,9 +223,7 @@
             gap: 20px;
         }
         .card {
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, background 0.3s;
+            transition: transform 0.3s ease;
             height: 400px;
             display: flex;
             flex-direction: column;
@@ -216,6 +237,11 @@
         }
         .card p, .card ul {
             font-size: 1.1em;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         ul {
             list-style: none;
@@ -232,7 +258,7 @@
             margin: 10px 0;
         }
         .contact-info {
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
         }
         a {
@@ -244,7 +270,6 @@
             font-size: 0.9em;
         }
 
-        /* Стили для вкладок */
         .tabs {
             margin-bottom: 20px;
             display: flex;
@@ -267,7 +292,6 @@
         .tab-content {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         .tab-content.active {
@@ -276,12 +300,47 @@
             transform: translateY(0);
         }
 
-        /* Уникальные группы вкладок */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #404040, #2d2d2d);
+            color: #e0e0e0;
+            border: 2px solid #555555;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.3s, transform 0.2s, border-color 0.3s;
+        }
+        .arrow:hover {
+            background: linear-gradient(45deg, #4d4d4d, #383838);
+            border-color: #666666;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .arrow-left {
+            left: 5px;
+        }
+        .arrow-right {
+            right: 5px;
+        }
+        body.light .arrow {
+            background: linear-gradient(45deg, #a3bffa, #b2f2bb);
+            color: #4a5e6e;
+            border: 2px solid #6b7280;
+        }
+        body.light .arrow:hover {
+            background: linear-gradient(45deg, #b2f2bb, #a3bffa);
+            border-color: #4a5e6e;
+        }
+
         .tab-group-1, .tab-group-2, .tab-group-3 {
             position: relative;
         }
 
-        /* Кнопка переключения темы */
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -289,7 +348,7 @@
             padding: 10px 20px;
             border: none;
             border-radius: 20px;
-            background: #64748b;
+            background: linear-gradient(to right, #333333, #404040);
             color: #fff;
             cursor: pointer;
             font-size: 1em;
@@ -297,42 +356,174 @@
             z-index: 1002;
         }
         .theme-toggle:hover {
-            background: #94a3b8;
+            background: #4d4d4d;
         }
 
-        /* Всплывающее окно */
+        .login-btn {
+            position: fixed;
+            top: 20px;
+            right: 180px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(to right, #555555, #666666);
+            color: #fff;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+            z-index: 1002;
+        }
+        .login-btn:hover {
+            background: linear-gradient(to right, #666666, #777777);
+        }
+
+        .admin-panel {
+            display: none;
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1003;
+            width: 300px;
+            height: auto;
+            min-width: 200px;
+            min-height: 200px;
+            resize: both;
+            overflow: auto;
+            cursor: move;
+        }
+        .admin-panel.active {
+            display: block;
+        }
+        .admin-panel h3 {
+            color: #cccccc;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            cursor: grab;
+        }
+        .admin-panel input, .admin-panel textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            background: #333333;
+            color: #e0e0e0;
+            font-size: 0.9em;
+        }
+        .admin-panel textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .admin-panel button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #404040;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .admin-panel button:hover {
+            background: #4d4d4d;
+        }
+        .admin-panel select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            background: #333333;
+            color: #e0e0e0;
+            font-size: 0.9em;
+        }
+
+        .login-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1003;
+            display: none;
+            text-align: center;
+        }
+        .login-form.active {
+            display: block;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            background: #333333;
+            color: #e0e0e0;
+        }
+        .login-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: #404040;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+        .login-form button:hover {
+            background: #4d4d4d;
+        }
+        .login-form label {
+            color: #e0e0e0;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+        .login-form input[type="checkbox"] {
+            vertical-align: middle;
+        }
+
         .popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #2d3748;
+            background: #2a2a2a;
             padding: 40px;
-            border-radius: 15px;
+            border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 1001;
             width: 50%;
-            height: 90%;
             max-width: 600px;
-            max-height: 800px;
+            max-height: 90%;
             text-align: center;
-            display: none; /* Скрыто по умолчанию */
+            display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
             overflow-y: auto;
         }
         .popup.active {
-            display: block; /* Показываем только при активации */
+            display: block;
             opacity: 1;
         }
         .popup h3 {
             margin-bottom: 25px;
-            color: #ffffff;
+            color: #cccccc;
             font-size: 2em;
         }
         .popup ul {
             list-style: none;
             padding: 0;
+            margin-bottom: 20px;
         }
         .popup li {
             margin-bottom: 20px;
@@ -343,17 +534,15 @@
             padding: 12px 25px;
             border: none;
             border-radius: 5px;
-            background: #666666;
+            background: #404040;
             color: #fff;
             cursor: pointer;
-            font-size: 1.1em;
             transition: background 0.3s;
         }
         .popup button:hover {
-            background: #888888;
+            background: #4d4d4d;
         }
 
-        /* Затемнение фона под окном */
         .overlay {
             position: fixed;
             top: 0;
@@ -368,7 +557,6 @@
             display: block;
         }
 
-        /* Блокировка интерактивности контента под окном */
         body.popup-active .news-ticker a,
         body.popup-active .tab-btn {
             pointer-events: none;
@@ -376,7 +564,6 @@
             cursor: not-allowed;
         }
 
-        /* Основной контент */
         .news, .container {
             position: relative;
             z-index: 1;
@@ -398,6 +585,7 @@
             }
             .news {
                 min-height: 80px;
+                padding: 15px 50px;
             }
             .card {
                 height: 300px;
@@ -409,9 +597,24 @@
             .tabs {
                 flex-wrap: wrap;
             }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
+            .login-btn {
+                top: 10px;
+                right: 170px;
+            }
+            .admin-panel {
+                top: 60px;
+                left: 10px;
+                width: 90%;
+            }
+            .login-form {
+                width: 90%;
+            }
             .popup {
                 width: 90%;
-                height: 80%;
                 padding: 20px;
             }
             .popup h3 {
@@ -420,6 +623,11 @@
             .popup li {
                 font-size: 1em;
             }
+            .arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -427,29 +635,25 @@
 <body class="dark">
     <div class="overlay" id="popupOverlay"></div>
     <button class="theme-toggle" onclick="toggleTheme()">Светлая тема</button>
+    <button class="login-btn" onclick="showLoginForm()">Log in</button>
     <header>
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
     </header>
 
     <div class="news">
         <h2>Новости лицея</h2>
-        <div class="news-ticker">
-            <div>
+        <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
+        <div class="news-ticker" id="newsTicker">
+            <div class="ticker-content" id="tickerContent">
                 <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" target="_blank">Дамир Чумакаев застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — читать далее...</a></h3>
-                <!-- Дублируем новости для непрерывного заполнения -->
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" target="_blank">Дамир Чумакаев застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — читать далее...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — фулл тут...</a></h3>
+                <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — смотри бесплатно...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — шок-контент...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — кликни сюда...</a></h3>
+                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — подробности внутри...</a></h3>
             </div>
         </div>
+        <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
     </div>
 
     <div class="container">
@@ -462,21 +666,15 @@
             <div class="tab-content-wrapper">
                 <div id="about1" class="tab-content active">
                     <h2>О нас</h2>
-                    <p>
-                        Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.
-                    </p>
+                    <p>Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.</p>
                 </div>
                 <div id="admission1" class="tab-content">
                     <h2>Информация о приёме</h2>
-                    <p>
-                        Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a>
-                    </p>
+                    <p>Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a></p>
                 </div>
                 <div id="education1" class="tab-content">
                     <h2>Образовательные услуги</h2>
-                    <p>
-                        Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!
-                    </p>
+                    <p>Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!</p>
                 </div>
             </div>
         </div>
@@ -490,9 +688,7 @@
             <div class="tab-content-wrapper">
                 <div id="schedule2" class="tab-content active">
                     <h2>Расписание и жизнь лицея</h2>
-                    <p>
-                        Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:
-                    </p>
+                    <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
                     <ul>
                         <li>1 смена: 8:00 - 13:05</li>
                         <li>2 смена: 14:00 - 19:05</li>
@@ -500,20 +696,16 @@
                 </div>
                 <div id="founder2" class="tab-content">
                     <h2>Учредитель</h2>
-                    <p>
-                        Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: office@admin.gorny.ru
-                    </p>
+                    <p>Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: office@admin.gorny.ru</p>
                 </div>
                 <div id="support2" class="tab-content">
                     <h2>Поддержка учащихся</h2>
-                    <p>
-                        Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.
-                    </p>
+                    <p>Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
                 </div>
             </div>
         </div>
 
-        <div class="card contact-info tab-group-3">
+        <div class="card tab-group-3">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
                 <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
@@ -533,9 +725,7 @@
                 </div>
                 <div id="hotline3" class="tab-content">
                     <h2>Горячая линия</h2>
-                    <p>
-                        Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.
-                    </p>
+                    <p>Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.</p>
                 </div>
             </div>
         </div>
@@ -546,39 +736,85 @@
         <p>Следите за нами в Telegram: <a href="https://t.me/Licey6_GA">@Licey6_GA</a> — анонсы мероприятий и новости!</p>
     </footer>
 
-    <!-- Всплывающее окно -->
+    <div class="login-form" id="loginForm">
+        <h3>Вход для администратора</h3>
+        <input type="text" id="loginInput" placeholder="Логин" />
+        <input type="password" id="passwordInput" placeholder="Пароль" />
+        <label><input type="checkbox" id="rememberMe"> Запомнить меня</label>
+        <button onclick="login()">Войти</button>
+        <button onclick="closeLoginForm()">Закрыть</button>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+        <h3>Управление новостями</h3>
+        <textarea id="newsText" placeholder="Текст новости"></textarea>
+        <input type="text" id="newsLink" placeholder="Ссылка на новость" />
+        <button onclick="addNews()">Добавить</button>
+        <select id="newsList" size="5"></select>
+        <button onclick="deleteNews()">Удалить выбранную новость</button>
+    </div>
+
     <div class="popup" id="welcomePopup">
-        <h3>Обновления сайта за 23 февраля 2025</h3>
+        <h3>Обновления сайта за 25 февраля 2025</h3>
         <ul>
-            <li>Улучшена читаемость текста новостей в тёмной теме — теперь он более светлый и контрастный.</li>
-            <li>Строка "Следите за нами в Telegram" перенесена в футер сайта для удобства навигации.</li>
-            <li>Добавлено всплывающее окно с обновлениями, которое теперь появляется при каждом открытии страницы.</li>
-            <li>Окно обновлений увеличено до почти полного экрана по вертикали и половины по горизонтали.</li>
-            <li>Исправлена проблема с неработающими кнопками под всплывающим окном с помощью CSS-блокировки.</li>
-            <li>Тёмная тема установлена по умолчанию для улучшения восприятия сайта в ночное время.</li>
-            <li>Добавлена прокрутка в окне обновлений для длинных списков изменений.</li>
-            <li>Добавлена новая электронная услуга «Прием обращений граждан» для удобства пользователей.</li>
-            <li>Добавлена информация об учредителе — администрации города Горно-Алтайска.</li>
-            <li>Добавлены контакты отдела по надзору и контролю Министерства образования и науки РА.</li>
-            <li>Добавлена возможность оценки условий образовательных услуг через QR-код.</li>
-            <li>Добавлена информация о воспитательной системе лицея с ссылкой на подробности.</li>
-            <li>Добавлены телефоны доверия для поддержки учащихся и родителей.</li>
-            <li>Добавлена телефонная линия «Ребёнок в опасности» для оперативной помощи.</li>
+            <li>Улучшена читаемость текста новостей в тёмной теме.</li>
+            <li>Добавлено всплывающее окно с обновлениями, появляющееся только для новых пользователей.</li>
+            <li>Окно обновлений увеличено до 90% высоты и 50% ширины экрана.</li>
+            <li>Тёмная тема затемнена, светло-серый заменён белым.</li>
+            <li>Добавлена анимация появления текста вкладок в разделах.</li>
+            <li>Добавлены отступы текста в разделах от краёв.</li>
+            <li>Добавлена новая электронная услуга «Прием обращений граждан».</li>
             <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
-            <li>Добавлены телефоны горячей линии по вопросам незаконных сборов денежных средств.</li>
-            <li>Добавлена информация о госуслугах в электронном виде через ЕПГУ.</li>
-            <li>Добавлена ссылка на официальный сайт государственных учреждений.</li>
-            <li>Добавлена информация о кружке "Рободетки" для учащихся 3-4 классов.</li>
-            <li>Добавлены видеоролики "Позитивное родительство" для родителей.</li>
-            <li>Добавлены сайты о безопасности с полезным контентом для детей и родителей.</li>
-            <li>Добавлена схема безопасного маршрута учащихся лицея.</li>
-            <li>Добавлена информация о работе ресурсного центра "Интелроб" в 2020-2021 учебном году.</li>
-            <li>Цвет окна обновлений изменён на тёмно-серый (#2d3748), идеально подходящий для тёмной темы.</li>
+            <li>Лента на CSS, кнопки перелистывания, кликбейт, новости удаляются корректно, добавлена галочка "Запомнить меня"!</li>
         </ul>
-        <button onclick="closePopup()">Закрыть</button>
+        <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
     <script>
+        let isAdminLoggedIn = false;
+        let newsItems = [];
+
+        // Список кликбейтных надписей
+        const clickbaitPhrases = [
+            " — читать далее...",
+            " — фулл тут...",
+            " — смотри бесплатно...",
+            " — шок-контент...",
+            " — кликни сюда...",
+            " — подробности внутри...",
+            " — узнай больше...",
+            " — не пропусти!"
+        ];
+
+        // Функция для получения случайной кликбейтной надписи
+        function getRandomClickbait() {
+            const randomIndex = Math.floor(Math.random() * clickbaitPhrases.length);
+            return clickbaitPhrases[randomIndex];
+        }
+
+        // Загружаем новости из localStorage или используем изначальные из HTML
+        const savedNews = localStorage.getItem('newsItems');
+        if (savedNews) {
+            const savedItems = JSON.parse(savedNews);
+            newsItems = savedItems.map(item => {
+                const h3 = document.createElement('h3');
+                h3.innerHTML = `<a href="${item.link}" target="_blank">${item.text}${getRandomClickbait()}</a>`;
+                return h3;
+            });
+        } else {
+            newsItems = Array.from(document.querySelectorAll('#tickerContent h3'));
+            saveNewsToLocalStorage(); // Сохраняем изначальные новости в localStorage
+        }
+
+        // Проверка сохранённого входа
+        const savedAdmin = localStorage.getItem('adminLoggedIn');
+        if (savedAdmin === 'true') {
+            isAdminLoggedIn = true;
+            document.getElementById('adminPanel').classList.add('active');
+            document.querySelector('.login-btn').style.display = 'none';
+            makeDraggableAndResizable(document.getElementById('adminPanel'));
+        }
+
         function toggleTheme() {
             const body = document.body;
             const button = document.querySelector('.theme-toggle');
@@ -596,46 +832,194 @@
         function openTab(evt, tabName, groupName) {
             const tabContents = document.querySelectorAll(`.${groupName} .tab-content`);
             const tabButtons = document.querySelectorAll(`.${groupName} .tab-btn`);
-
-            for (let i = 0; i < tabContents.length; i++) {
-                tabContents[i].classList.remove('active');
-            }
-            for (let i = 0; i < tabButtons.length; i++) {
-                tabButtons[i].classList.remove('active');
-            }
-
+            for (let i = 0; i < tabContents.length; i++) tabContents[i].classList.remove('active');
+            for (let i = 0; i < tabButtons.length; i++) tabButtons[i].classList.remove('active');
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
         }
 
-        // Управление всплывающим окном
-        function showPopup() {
-            document.getElementById('welcomePopup').classList.add('active');
-            document.getElementById('popupOverlay').classList.add('active');
-            document.body.classList.add('popup-active'); // Блокируем кнопки
+        const ticker = document.getElementById('newsTicker');
+        const tickerContent = document.getElementById('tickerContent');
+
+        function scrollNews(distance) {
+            const currentScroll = ticker.scrollLeft;
+            const contentWidth = tickerContent.scrollWidth / 2;
+            let targetScroll = currentScroll + distance;
+
+            if (targetScroll >= contentWidth) {
+                targetScroll -= contentWidth;
+            } else if (targetScroll < 0) {
+                targetScroll += contentWidth;
+            }
+
+            ticker.scrollTo({ left: targetScroll, behavior: 'smooth' });
         }
 
-        function closePopup() {
-            const popup = document.getElementById('welcomePopup');
-            const overlay = document.getElementById('popupOverlay');
-            popup.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.classList.remove('popup-active'); // Разблокируем кнопки
-        }
+        tickerContent.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link) window.open(link.href, '_blank');
+        });
 
-        // Активировать первую вкладку в каждом окне и показывать окно обновлений
         document.addEventListener('DOMContentLoaded', () => {
             const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3'];
             groups.forEach(group => {
                 const firstTabButton = document.querySelector(`.${group} .tab-btn`);
-                if (firstTabButton) {
-                    firstTabButton.click();
-                }
+                if (firstTabButton) firstTabButton.click();
             });
-
-            // Показать всплывающее окно при каждом открытии
-            showPopup();
+            loadNewsFromStorage(); // Загружаем новости из localStorage при старте
+            updateTickerContent();
+            updateNewsList(); // Обновляем список новостей в админ-панели
+            showWelcomePopupForNewUsers();
         });
+
+        function loadNewsFromStorage() {
+            tickerContent.innerHTML = ''; // Очищаем текущий контент
+            const fragment = document.createDocumentFragment();
+            newsItems.forEach(item => fragment.appendChild(item.cloneNode(true)));
+            tickerContent.appendChild(fragment);
+        }
+
+        function showWelcomePopupForNewUsers() {
+            const hasVisited = document.cookie.includes('hasVisited=true');
+            if (!hasVisited) {
+                document.getElementById('welcomePopup').classList.add('active');
+                document.getElementById('popupOverlay').classList.add('active');
+                document.body.classList.add('popup-active');
+                document.cookie = 'hasVisited=true; max-age=31536000'; // Куки на год
+            }
+        }
+
+        function closeWelcomePopup() {
+            document.getElementById('welcomePopup').classList.remove('active');
+            document.getElementById('popupOverlay').classList.remove('active');
+            document.body.classList.remove('popup-active');
+        }
+
+        function showLoginForm() {
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('popupOverlay').classList.add('active');
+            document.body.classList.add('popup-active');
+        }
+
+        function closeLoginForm() {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('popupOverlay').classList.remove('active');
+            document.body.classList.remove('popup-active');
+        }
+
+        function login() {
+            const login = document.getElementById('loginInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            if (login === 'cock' && password === 'stafil') {
+                isAdminLoggedIn = true;
+                document.getElementById('loginForm').classList.remove('active');
+                document.getElementById('popupOverlay').classList.remove('active');
+                document.body.classList.remove('popup-active');
+                document.getElementById('adminPanel').classList.add('active');
+                document.querySelector('.login-btn').style.display = 'none';
+                makeDraggableAndResizable(document.getElementById('adminPanel'));
+                updateNewsList();
+                if (rememberMe) {
+                    localStorage.setItem('adminLoggedIn', 'true'); // Сохраняем вход
+                } else {
+                    localStorage.removeItem('adminLoggedIn'); // Удаляем, если галочка снята
+                }
+            } else {
+                alert('Неверный логин или пароль!');
+            }
+        }
+
+        function addNews() {
+            if (!isAdminLoggedIn) return;
+            const newsText = document.getElementById('newsText').value.trim();
+            const newsLink = document.getElementById('newsLink').value.trim();
+            if (newsText && newsLink) {
+                const newNews = document.createElement('h3');
+                newNews.innerHTML = `<a href="${newsLink}" target="_blank">${newsText}${getRandomClickbait()}</a>`;
+                newsItems.push(newNews); // Добавляем в массив
+                saveNewsToLocalStorage(); // Сохраняем в localStorage
+                loadNewsFromStorage(); // Перезагружаем новости в HTML
+                updateTickerContent(); // Обновляем дублирование
+                updateNewsList();
+                document.getElementById('newsText').value = '';
+                document.getElementById('newsLink').value = '';
+            } else {
+                alert('Введите текст новости и ссылку!');
+            }
+        }
+
+        function saveNewsToLocalStorage() {
+            const newsData = newsItems.map(item => {
+                const link = item.querySelector('a');
+                const text = link.textContent.replace(/ — .+?$/, '').trim(); // Убираем кликбейт при сохранении
+                return {
+                    text: text,
+                    link: link.href
+                };
+            });
+            localStorage.setItem('newsItems', JSON.stringify(newsData));
+        }
+
+        function updateTickerContent() {
+            const currentContent = tickerContent.innerHTML;
+            tickerContent.innerHTML = currentContent + currentContent; // Дублируем для анимации
+            ticker.scrollLeft = 0;
+        }
+
+        function updateNewsList() {
+            const newsList = document.getElementById('newsList');
+            newsList.innerHTML = '';
+            newsItems.forEach((item, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = item.textContent.replace(/ — .+?$/, '').trim(); // Убираем кликбейт в списке
+                newsList.appendChild(option);
+            });
+        }
+
+        function deleteNews() {
+            if (!isAdminLoggedIn) return;
+            const newsList = document.getElementById('newsList');
+            const selectedIndex = newsList.selectedIndex;
+            if (selectedIndex === -1) {
+                alert('Выберите новость для удаления!');
+                return;
+            }
+            newsItems.splice(selectedIndex, 1); // Удаляем из массива
+            saveNewsToLocalStorage(); // Обновляем localStorage
+            loadNewsFromStorage(); // Перезагружаем новости в HTML
+            updateTickerContent(); // Обновляем дублирование
+            updateNewsList();
+        }
+
+        function makeDraggableAndResizable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            element.querySelector('h3').onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
     </script>
 </body>
 </html>
