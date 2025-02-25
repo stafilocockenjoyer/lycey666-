@@ -631,6 +631,9 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
 </head>
 <body class="dark">
     <div class="overlay" id="popupOverlay"></div>
@@ -645,12 +648,7 @@
         <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
         <div class="news-ticker" id="newsTicker">
             <div class="ticker-content" id="tickerContent">
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" target="_blank">Дамир Чумакаев застрелил родителей после проёба катки в Доте — читать далее...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" target="_blank">Елизавета Берсенёва зашла на порнхаб — фулл тут...</a></h3>
-                <h3><a href="https://rt.pornhub.com" target="_blank">Вова из 11Б подрался с директором из-за шмоток — смотри бесплатно...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" target="_blank">Илья Ускоев изнасиловал маленького ребенка — шок-контент...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" target="_blank">Айсын Ерленбаев раздавил стол директора дунув на него — кликни сюда...</a></h3>
-                <h3><a href="https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" target="_blank">Назар Сидорков подвергся сексуальному насилию от — подробности внутри...</a></h3>
+                <!-- Новости будут загружаться динамически -->
             </div>
         </div>
         <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
@@ -765,54 +763,71 @@
             <li>Добавлены отступы текста в разделах от краёв.</li>
             <li>Добавлена новая электронная услуга «Прием обращений граждан».</li>
             <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
-            <li>Лента на CSS, кнопки перелистывания, кликбейт, новости удаляются корректно, добавлена галочка "Запомнить меня"!</li>
+            <li>Лента на CSS, кнопки перелистывания, кликбейт, новости в Firebase с авторизацией!</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
     <script>
+        // Инициализация Firebase (замени на свои данные из консоли Firebase)
+          const firebaseConfig = {
+            apiKey: "AIzaSyAkoQTZ5pG6v_yjFvj_-HJagLQl3F0jZ80",
+            authDomain: "lycey666.firebaseapp.com",
+            databaseURL: "https://lycey666-default-rtdb.firebaseio.com",
+            projectId: "lycey666",
+            storageBucket: "lycey666.firebasestorage.app",
+            messagingSenderId: "243803681189",
+            appId: "1:243803681189:web:9f6f2b52df8240a187784c",
+            measurementId: "G-V7PHF541MY"
+      };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+        const newsRef = db.ref('news');
+
         let isAdminLoggedIn = false;
         let newsItems = [];
 
-        // Список кликбейтных надписей
         const clickbaitPhrases = [
-            " — читать далее...",
-            " — фулл тут...",
-            " — смотри бесплатно...",
-            " — шок-контент...",
-            " — кликни сюда...",
-            " — подробности внутри...",
-            " — узнай больше...",
-            " — не пропусти!"
+            " — читать далее...", " — фулл тут...", " — смотри бесплатно...",
+            " — шок-контент...", " — кликни сюда...", " — подробности внутри...",
+            " — узнай больше...", " — не пропусти!"
         ];
 
-        // Функция для получения случайной кликбейтной надписи
         function getRandomClickbait() {
-            const randomIndex = Math.floor(Math.random() * clickbaitPhrases.length);
-            return clickbaitPhrases[randomIndex];
+            return clickbaitPhrases[Math.floor(Math.random() * clickbaitPhrases.length)];
         }
 
-        // Загружаем новости из localStorage или используем изначальные из HTML
-        const savedNews = localStorage.getItem('newsItems');
-        if (savedNews) {
-            const savedItems = JSON.parse(savedNews);
-            newsItems = savedItems.map(item => {
-                const h3 = document.createElement('h3');
-                h3.innerHTML = `<a href="${item.link}" target="_blank">${item.text}${getRandomClickbait()}</a>`;
-                return h3;
+        // Загрузка новостей из Firebase
+        function loadNewsFromFirebase() {
+            newsRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                newsItems = [];
+                tickerContent.innerHTML = '';
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const item = data[key];
+                        const h3 = document.createElement('h3');
+                        h3.innerHTML = `<a href="${item.link}" target="_blank">${item.text}${getRandomClickbait()}</a>`;
+                        h3.dataset.id = key; // Сохраняем ID для удаления
+                        newsItems.push(h3);
+                        tickerContent.appendChild(h3);
+                    });
+                } else {
+                    // Если в Firebase пусто, добавляем изначальные новости
+                    const initialNews = [
+                        { text: "Дамир Чумакаев застрелил родителей после проёба катки в Доте", link: "https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" },
+                        { text: "Елизавета Берсенёва зашла на порнхаб", link: "https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" },
+                        { text: "Вова из 11Б подрался с директором из-за шмоток", link: "https://rt.pornhub.com" },
+                        { text: "Илья Ускоев изнасиловал маленького ребенка", link: "https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" },
+                        { text: "Айсын Ерленбаев раздавил стол директора дунув на него", link: "https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" },
+                        { text: "Назар Сидорков подвергся сексуальному насилию от", link: "https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" }
+                    ];
+                    initialNews.forEach(news => newsRef.push(news));
+                }
+                updateTickerContent();
+                updateNewsList();
             });
-        } else {
-            newsItems = Array.from(document.querySelectorAll('#tickerContent h3'));
-            saveNewsToLocalStorage(); // Сохраняем изначальные новости в localStorage
-        }
-
-        // Проверка сохранённого входа
-        const savedAdmin = localStorage.getItem('adminLoggedIn');
-        if (savedAdmin === 'true') {
-            isAdminLoggedIn = true;
-            document.getElementById('adminPanel').classList.add('active');
-            document.querySelector('.login-btn').style.display = 'none';
-            makeDraggableAndResizable(document.getElementById('adminPanel'));
         }
 
         function toggleTheme() {
@@ -866,18 +881,22 @@
                 const firstTabButton = document.querySelector(`.${group} .tab-btn`);
                 if (firstTabButton) firstTabButton.click();
             });
-            loadNewsFromStorage(); // Загружаем новости из localStorage при старте
-            updateTickerContent();
-            updateNewsList(); // Обновляем список новостей в админ-панели
+            loadNewsFromFirebase();
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    isAdminLoggedIn = true;
+                    document.getElementById('adminPanel').classList.add('active');
+                    document.querySelector('.login-btn').style.display = 'none';
+                    makeDraggableAndResizable(document.getElementById('adminPanel'));
+                    updateNewsList();
+                } else {
+                    isAdminLoggedIn = false;
+                    document.getElementById('adminPanel').classList.remove('active');
+                    document.querySelector('.login-btn').style.display = 'block';
+                }
+            });
             showWelcomePopupForNewUsers();
         });
-
-        function loadNewsFromStorage() {
-            tickerContent.innerHTML = ''; // Очищаем текущий контент
-            const fragment = document.createDocumentFragment();
-            newsItems.forEach(item => fragment.appendChild(item.cloneNode(true)));
-            tickerContent.appendChild(fragment);
-        }
 
         function showWelcomePopupForNewUsers() {
             const hasVisited = document.cookie.includes('hasVisited=true');
@@ -885,7 +904,7 @@
                 document.getElementById('welcomePopup').classList.add('active');
                 document.getElementById('popupOverlay').classList.add('active');
                 document.body.classList.add('popup-active');
-                document.cookie = 'hasVisited=true; max-age=31536000'; // Куки на год
+                document.cookie = 'hasVisited=true; max-age=31536000';
             }
         }
 
@@ -908,40 +927,36 @@
         }
 
         function login() {
-            const login = document.getElementById('loginInput').value;
+            const email = document.getElementById('loginInput').value;
             const password = document.getElementById('passwordInput').value;
             const rememberMe = document.getElementById('rememberMe').checked;
-            if (login === 'cock' && password === 'stafil') {
-                isAdminLoggedIn = true;
-                document.getElementById('loginForm').classList.remove('active');
-                document.getElementById('popupOverlay').classList.remove('active');
-                document.body.classList.remove('popup-active');
-                document.getElementById('adminPanel').classList.add('active');
-                document.querySelector('.login-btn').style.display = 'none';
-                makeDraggableAndResizable(document.getElementById('adminPanel'));
-                updateNewsList();
-                if (rememberMe) {
-                    localStorage.setItem('adminLoggedIn', 'true'); // Сохраняем вход
-                } else {
-                    localStorage.removeItem('adminLoggedIn'); // Удаляем, если галочка снята
-                }
-            } else {
-                alert('Неверный логин или пароль!');
-            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    document.getElementById('loginForm').classList.remove('active');
+                    document.getElementById('popupOverlay').classList.remove('active');
+                    document.body.classList.remove('popup-active');
+                    if (rememberMe) {
+                        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                    } else {
+                        auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+                    }
+                })
+                .catch(error => {
+                    alert('Ошибка входа: ' + error.message);
+                });
         }
 
         function addNews() {
-            if (!isAdminLoggedIn) return;
+            if (!isAdminLoggedIn) {
+                alert('Войдите в админ-панель для редактирования!');
+                return;
+            }
             const newsText = document.getElementById('newsText').value.trim();
             const newsLink = document.getElementById('newsLink').value.trim();
             if (newsText && newsLink) {
-                const newNews = document.createElement('h3');
-                newNews.innerHTML = `<a href="${newsLink}" target="_blank">${newsText}${getRandomClickbait()}</a>`;
-                newsItems.push(newNews); // Добавляем в массив
-                saveNewsToLocalStorage(); // Сохраняем в localStorage
-                loadNewsFromStorage(); // Перезагружаем новости в HTML
-                updateTickerContent(); // Обновляем дублирование
-                updateNewsList();
+                const newNews = { text: newsText, link: newsLink };
+                newsRef.push(newNews);
                 document.getElementById('newsText').value = '';
                 document.getElementById('newsLink').value = '';
             } else {
@@ -949,21 +964,9 @@
             }
         }
 
-        function saveNewsToLocalStorage() {
-            const newsData = newsItems.map(item => {
-                const link = item.querySelector('a');
-                const text = link.textContent.replace(/ — .+?$/, '').trim(); // Убираем кликбейт при сохранении
-                return {
-                    text: text,
-                    link: link.href
-                };
-            });
-            localStorage.setItem('newsItems', JSON.stringify(newsData));
-        }
-
         function updateTickerContent() {
             const currentContent = tickerContent.innerHTML;
-            tickerContent.innerHTML = currentContent + currentContent; // Дублируем для анимации
+            tickerContent.innerHTML = currentContent + currentContent;
             ticker.scrollLeft = 0;
         }
 
@@ -973,24 +976,25 @@
             newsItems.forEach((item, index) => {
                 const option = document.createElement('option');
                 option.value = index;
-                option.textContent = item.textContent.replace(/ — .+?$/, '').trim(); // Убираем кликбейт в списке
+                option.textContent = item.textContent.replace(/ — .+?$/, '').trim();
                 newsList.appendChild(option);
             });
         }
 
         function deleteNews() {
-            if (!isAdminLoggedIn) return;
+            if (!isAdminLoggedIn) {
+                alert('Войдите в админ-панель для редактирования!');
+                return;
+            }
             const newsList = document.getElementById('newsList');
             const selectedIndex = newsList.selectedIndex;
             if (selectedIndex === -1) {
                 alert('Выберите новость для удаления!');
                 return;
             }
-            newsItems.splice(selectedIndex, 1); // Удаляем из массива
-            saveNewsToLocalStorage(); // Обновляем localStorage
-            loadNewsFromStorage(); // Перезагружаем новости в HTML
-            updateTickerContent(); // Обновляем дублирование
-            updateNewsList();
+            const itemToRemove = newsItems[selectedIndex];
+            const itemId = itemToRemove.dataset.id;
+            newsRef.child(itemId).remove();
         }
 
         function makeDraggableAndResizable(element) {
