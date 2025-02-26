@@ -631,9 +631,10 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
+    <!-- Используем UMD-версию Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body class="dark">
     <div class="overlay" id="popupOverlay"></div>
@@ -763,7 +764,7 @@
             <li>Добавлены отступы текста в разделах от краёв.</li>
             <li>Добавлена новая электронная услуга «Прием обращений граждан».</li>
             <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
-            <li>Лента на CSS, кнопки перелистывания, кликбейт, новости в Firebase с авторизацией — JS вынесен в scripts.js!</li>
+            <li>Исправлен SyntaxError с Firebase через UMD-версию!</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>

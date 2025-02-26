@@ -1,13 +1,14 @@
-// Инициализация Firebase (замени на свои данные из консоли Firebase)
+// Инициализация Firebase с использованием совместимой UMD-версии
 const firebaseConfig = {
-  apiKey: "AIzaSyAkoQTZ5pG6v_yjFvj_-HJagLQl3F0jZ80",
-  authDomain: "lycey666.firebaseapp.com",
-  projectId: "lycey666",
-  storageBucket: "lycey666.firebasestorage.app",
-  messagingSenderId: "243803681189",
-  appId: "1:243803681189:web:e35a1b402a76ba2d87784c",
-  measurementId: "G-DYXLMY1C2L"
-};
+    apiKey: "AIzaSyAkoQTZ5pG6v_yjFvj_-HJagLQl3F0jZ80",
+    authDomain: "lycey666.firebaseapp.com",
+    databaseURL: "https://lycey666-default-rtdb.firebaseio.com",
+    projectId: "lycey666",
+    storageBucket: "lycey666.firebasestorage.app",
+    messagingSenderId: "243803681189",
+    appId: "1:243803681189:web:e35a1b402a76ba2d87784c",
+    measurementId: "G-DYXLMY1C2L"
+  };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
