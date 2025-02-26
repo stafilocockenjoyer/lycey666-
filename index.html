@@ -198,9 +198,12 @@
             overflow: hidden;
             position: relative;
             flex-grow: 1;
+            display: flex; /* Добавляем flex для выравнивания */
+            align-items: flex-start; /* Выравнивание по верху */
         }
         .ticker-content {
-            display: inline-block;
+            display: inline-flex; /* Изменяем на inline-flex для корректного выравнивания */
+            align-items: flex-start; /* Выравнивание элементов по верху */
             animation: ticker-scroll 30s linear infinite;
         }
         @keyframes ticker-scroll {
@@ -211,6 +214,7 @@
             display: inline-block;
             line-height: 1.5;
             margin-right: 15px;
+            vertical-align: top; /* Дополнительное выравнивание по верху */
         }
         .news-ticker:hover .ticker-content {
             animation-play-state: paused;
@@ -631,7 +635,6 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Используем UMD-версию Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -764,7 +767,7 @@
             <li>Добавлены отступы текста в разделах от краёв.</li>
             <li>Добавлена новая электронная услуга «Прием обращений граждан».</li>
             <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
-            <li>Исправлен SyntaxError с Firebase через UMD-версию!</li>
+            <li>Лента новостей выравнивается по верхнему краю!</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
