@@ -60,6 +60,7 @@ function loadNewsFromFirebase() {
         }
         cache.tickerContent.innerHTML = '';
         cache.tickerContent.appendChild(fragment);
+        updateTickerContent(); // Добавляем дублирование контента
         updateNewsList();
     }, (error) => {
         console.error('Ошибка загрузки новостей:', error);
@@ -172,6 +173,12 @@ function addNews() {
     } else {
         alert('Введите текст новости и ссылку!');
     }
+}
+
+function updateTickerContent() {
+    const currentContent = cache.tickerContent.innerHTML;
+    cache.tickerContent.innerHTML = currentContent + currentContent; // Возвращаем дублирование контента
+    cache.ticker.scrollLeft = 0;
 }
 
 function updateNewsList() {
