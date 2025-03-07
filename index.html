@@ -4,637 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лицей №6 им. И.З.Шуклина — Будущее начинается здесь</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            position: relative;
-            min-height: 100vh;
-            transition: color 0.3s;
-        }
-        body.light {
-            background: #f0f4f8;
-            color: #4a5e6e;
-        }
-        body.light header {
-            background: linear-gradient(to right, #a3bffa, #b2f2bb);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        body.light .card {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-            padding: 25px;
-        }
-        body.light .card h2 {
-            color: #6b7280;
-        }
-        body.light .news {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 2px solid #a3bffa;
-            border-radius: 10px;
-            min-height: 100px;
-            padding: 25px 60px;
-            position: relative;
-        }
-        body.light .news h2 {
-            color: #6b7280;
-        }
-        body.light .news-ticker a {
-            color: #4a5e6e;
-            background: rgba(163, 191, 250, 0.2);
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-right: 15px;
-            text-decoration: none;
-            transition: color 0.3s, background 0.3s;
-            display: inline-block;
-            width: 300px;
-            white-space: normal;
-            font-size: 1.4em;
-        }
-        body.light .news-ticker a:hover {
-            color: #fff;
-            background: #a3bffa;
-        }
-        body.light .card p, body.light .card ul {
-            color: #5a6a7a;
-        }
-        body.light .highlight {
-            background: #d1e7dd;
-            color: #4a5e6e;
-        }
-        body.light footer {
-            background: #e2e8f0;
-            color: #4a5e6e;
-        }
-        body.light a {
-            color: #6b7280;
-        }
-        body.light a:hover {
-            color: #a3bffa;
-        }
-        body.light .tab-btn {
-            background: #e0e7ff;
-            color: #4a5e6e;
-        }
-        body.light .tab-btn.active {
-            background: #a3bffa;
-            color: #fff;
-        }
-
-        body.dark {
-            background: none;
-            color: #e0e0e0;
-        }
-        body.dark:before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%);
-            z-index: -1;
-        }
-        body.dark header {
-            background: transparent;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-        }
-        body.dark .card {
-            background: #2a2a2a;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 25px;
-        }
-        body.dark .card h2 {
-            color: #cccccc;
-        }
-        body.dark .news {
-            background: #333333;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            border: 2px solid #404040;
-            border-radius: 10px;
-            min-height: 100px;
-            padding: 25px 60px;
-            position: relative;
-        }
-        body.dark .news h2 {
-            color: #cccccc;
-        }
-        body.dark .news-ticker a {
-            color: #e0e0e0;
-            background: #404040;
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-right: 15px;
-            text-decoration: none;
-            transition: color 0.3s, background 0.3s;
-            display: inline-block;
-            width: 300px;
-            white-space: normal;
-            font-size: 1.4em;
-        }
-        body.dark .news-ticker a:hover {
-            color: #ffffff;
-            background: #4d4d4d;
-        }
-        body.dark .card p, body.dark .card ul {
-            color: #e0e0e0;
-        }
-        body.dark .highlight {
-            background: #404040;
-            color: #e0e0e0;
-        }
-        body.dark footer {
-            background: transparent;
-            color: #e0e0e0;
-        }
-        body.dark a {
-            color: #cccccc;
-        }
-        body.dark a:hover {
-            color: #ffffff;
-        }
-        body.dark .tab-btn {
-            background: #333333;
-            color: #e0e0e0;
-        }
-        body.dark .tab-btn.active {
-            background: #404040;
-            color: #ffffff;
-        }
-
-        header {
-            padding: 40px;
-            text-align: center;
-            position: relative;
-        }
-        header h1 {
-            font-size: 2.5em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .news {
-            max-width: 1000px;
-            margin: 20px auto;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .news h2 {
-            margin-bottom: 15px;
-            font-size: 2em;
-        }
-        .news-ticker {
-            white-space: nowrap;
-            overflow: hidden;
-            position: relative;
-            flex-grow: 1;
-            display: flex; /* Добавляем flex для выравнивания */
-            align-items: flex-start; /* Выравнивание по верху */
-        }
-        .ticker-content {
-            display: inline-flex; /* Изменяем на inline-flex для корректного выравнивания */
-            align-items: flex-start; /* Выравнивание элементов по верху */
-            animation: ticker-scroll 30s linear infinite;
-        }
-        @keyframes ticker-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .news-ticker h3 {
-            display: inline-block;
-            line-height: 1.5;
-            margin-right: 15px;
-            vertical-align: top; /* Дополнительное выравнивание по верху */
-        }
-        .news-ticker:hover .ticker-content {
-            animation-play-state: paused;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 20px;
-            display: grid;
-            gap: 20px;
-        }
-        .card {
-            transition: transform 0.3s ease;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card h2 {
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-        .card p, .card ul {
-            font-size: 1.1em;
-            animation: fadeIn 0.5s ease-in-out forwards;
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-        ul li:before {
-            content: "● ";
-            color: #a3bffa;
-        }
-        .highlight {
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 10px 0;
-        }
-        .contact-info {
-            padding: 25px;
-            border-radius: 10px;
-        }
-        a {
-            font-weight: bold;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
-        }
-
-        .tabs {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .tab-btn.active {
-            font-weight: bold;
-        }
-        .tab-content-wrapper {
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #404040, #2d2d2d);
-            color: #e0e0e0;
-            border: 2px solid #555555;
-            border-radius: 50%;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.3s, transform 0.2s, border-color 0.3s;
-        }
-        .arrow:hover {
-            background: linear-gradient(45deg, #4d4d4d, #383838);
-            border-color: #666666;
-            transform: translateY(-50%) scale(1.1);
-        }
-        .arrow-left {
-            left: 5px;
-        }
-        .arrow-right {
-            right: 5px;
-        }
-        body.light .arrow {
-            background: linear-gradient(45deg, #a3bffa, #b2f2bb);
-            color: #4a5e6e;
-            border: 2px solid #6b7280;
-        }
-        body.light .arrow:hover {
-            background: linear-gradient(45deg, #b2f2bb, #a3bffa);
-            border-color: #4a5e6e;
-        }
-
-        .tab-group-1, .tab-group-2, .tab-group-3 {
-            position: relative;
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(to right, #333333, #404040);
-            color: #fff;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s;
-            z-index: 1002;
-        }
-        .theme-toggle:hover {
-            background: #4d4d4d;
-        }
-
-        .login-btn {
-            position: fixed;
-            top: 20px;
-            right: 180px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(to right, #555555, #666666);
-            color: #fff;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s;
-            z-index: 1002;
-        }
-        .login-btn:hover {
-            background: linear-gradient(to right, #666666, #777777);
-        }
-
-        .admin-panel {
-            display: none;
-            position: absolute;
-            top: 100px;
-            left: 20px;
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1003;
-            width: 300px;
-            height: auto;
-            min-width: 200px;
-            min-height: 200px;
-            resize: both;
-            overflow: auto;
-            cursor: move;
-        }
-        .admin-panel.active {
-            display: block;
-        }
-        .admin-panel h3 {
-            color: #cccccc;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            cursor: grab;
-        }
-        .admin-panel input, .admin-panel textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555555;
-            border-radius: 5px;
-            background: #333333;
-            color: #e0e0e0;
-            font-size: 0.9em;
-        }
-        .admin-panel textarea {
-            height: 80px;
-            resize: vertical;
-        }
-        .admin-panel button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #404040;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-        .admin-panel button:hover {
-            background: #4d4d4d;
-        }
-        .admin-panel select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555555;
-            border-radius: 5px;
-            background: #333333;
-            color: #e0e0e0;
-            font-size: 0.9em;
-        }
-
-        .login-form {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1003;
-            display: none;
-            text-align: center;
-        }
-        .login-form.active {
-            display: block;
-        }
-        .login-form input[type="text"],
-        .login-form input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #555555;
-            border-radius: 5px;
-            background: #333333;
-            color: #e0e0e0;
-        }
-        .login-form button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background: #404040;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-right: 10px;
-        }
-        .login-form button:hover {
-            background: #4d4d4d;
-        }
-        .login-form label {
-            color: #e0e0e0;
-            font-size: 0.9em;
-            margin-right: 5px;
-        }
-        .login-form input[type="checkbox"] {
-            vertical-align: middle;
-        }
-
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2a2a2a;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-            width: 50%;
-            max-width: 600px;
-            max-height: 90%;
-            text-align: center;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            overflow-y: auto;
-        }
-        .popup.active {
-            display: block;
-            opacity: 1;
-        }
-        .popup h3 {
-            margin-bottom: 25px;
-            color: #cccccc;
-            font-size: 2em;
-        }
-        .popup ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-        .popup li {
-            margin-bottom: 20px;
-            color: #e0e0e0;
-            font-size: 1.3em;
-        }
-        .popup button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            background: #404040;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .popup button:hover {
-            background: #4d4d4d;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            display: none;
-        }
-        .overlay.active {
-            display: block;
-        }
-
-        body.popup-active .news-ticker a,
-        body.popup-active .tab-btn {
-            pointer-events: none;
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .news, .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            .news, .container {
-                padding: 10px;
-            }
-            .news h2, .card h2 {
-                font-size: 1.5em;
-            }
-            .news-ticker a {
-                font-size: 1.2em;
-                width: 200px;
-            }
-            .news {
-                min-height: 80px;
-                padding: 15px 50px;
-            }
-            .card {
-                height: 300px;
-            }
-            .tab-btn {
-                padding: 8px 15px;
-                margin-right: 5px;
-            }
-            .tabs {
-                flex-wrap: wrap;
-            }
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-            }
-            .login-btn {
-                top: 10px;
-                right: 170px;
-            }
-            .admin-panel {
-                top: 60px;
-                left: 10px;
-                width: 90%;
-            }
-            .login-form {
-                width: 90%;
-            }
-            .popup {
-                width: 90%;
-                padding: 20px;
-            }
-            .popup h3 {
-                font-size: 1.5em;
-            }
-            .popup li {
-                font-size: 1em;
-            }
-            .arrow {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-        }
-    </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -647,91 +18,91 @@
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
     </header>
 
-    <div class="news">
-        <h2>Новости лицея</h2>
-        <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
-        <div class="news-ticker" id="newsTicker">
-            <div class="ticker-content" id="tickerContent">
-                <!-- Новости будут загружаться динамически -->
+    <main>
+        <section class="news">
+            <h2>Новости лицея</h2>
+            <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
+            <div class="news-ticker" id="newsTicker">
+                <div class="ticker-content" id="tickerContent"></div>
             </div>
-        </div>
-        <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
-    </div>
+            <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
+        </section>
 
-    <div class="container">
-        <div class="card tab-group-1">
-            <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
-                <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
-                <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
-            </div>
-            <div class="tab-content-wrapper">
-                <div id="about1" class="tab-content active">
-                    <h2>О нас</h2>
-                    <p>Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.</p>
+        <div class="container">
+            <article class="card tab-group-1">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
+                    <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
+                    <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
                 </div>
-                <div id="admission1" class="tab-content">
-                    <h2>Информация о приёме</h2>
-                    <p>Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a></p>
+                <div class="tab-content-wrapper">
+                    <div id="about1" class="tab-content active">
+                        <h2>О нас</h2>
+                        <p>Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.</p>
+                    </div>
+                    <div id="admission1" class="tab-content">
+                        <h2>Информация о приёме</h2>
+                        <p>Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a></p>
+                    </div>
+                    <div id="education1" class="tab-content">
+                        <h2>Образовательные услуги</h2>
+                        <p>Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!</p>
+                    </div>
                 </div>
-                <div id="education1" class="tab-content">
-                    <h2>Образовательные услуги</h2>
-                    <p>Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!</p>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <div class="card tab-group-2">
-            <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание и жизнь лицея</button>
-                <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
-                <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
-            </div>
-            <div class="tab-content-wrapper">
-                <div id="schedule2" class="tab-content active">
-                    <h2>Расписание и жизнь лицея</h2>
-                    <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
-                    <ul>
-                        <li>1 смена: 8:00 - 13:05</li>
-                        <li>2 смена: 14:00 - 19:05</li>
-                    </ul>
+            <article class="card tab-group-2">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание и жизнь лицея</button>
+                    <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
+                    <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
                 </div>
-                <div id="founder2" class="tab-content">
-                    <h2>Учредитель</h2>
-                    <p>Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: office@admin.gorny.ru</p>
+                <div class="tab-content-wrapper">
+                    <div id="schedule2" class="tab-content active">
+                        <h2>Расписание и жизнь лицея</h2>
+                        <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
+                        <ul>
+                            <li>1 смена: 8:00 - 13:05</li>
+                            <li>2 смена: 14:00 - 19:05</li>
+                        </ul>
+                    </div>
+                    <div id="founder2" class="tab-content">
+                        <h2>Учредитель</h2>
+                        <p>Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: <a href="mailto:adm@gorny-altay.ru">adm@gorny-altay.ru</a></p>
+                    </div>
+                    <div id="support2" class="tab-content">
+                        <h2>Поддержка учащихся</h2>
+                        <p>Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
+                    </div>
                 </div>
-                <div id="support2" class="tab-content">
-                    <h2>Поддержка учащихся</h2>
-                    <p>Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
-                </div>
-            </div>
-        </div>
+            </article>
 
-        <div class="card tab-group-3">
-            <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
-                <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
-            </div>
-            <div class="tab-content-wrapper">
-                <div id="contacts3" class="tab-content active">
-                    <h2>Контакты</h2>
-                    <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
-                    <p><strong>Телефоны:</strong></p>
-                    <ul>
-                        <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
-                        <li>Методкабинет: 8(388)22-2-50-48</li>
-                        <li>Вахта: 2-93-83</li>
-                    </ul>
-                    <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
-                    <p>Задайте вопрос директору: <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+            <article class="card tab-group-3">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
+                    <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
                 </div>
-                <div id="hotline3" class="tab-content">
-                    <h2>Горячая линия</h2>
-                    <p>Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.</p>
+                <div class="tab-content-wrapper">
+                    <div id="contacts3" class="tab-content active">
+                        <h2>Контакты</h2>
+                        <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
+                        <p><strong>Телефоны:</strong></p>
+                        <ul>
+                            <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
+                            <li>Методкабинет: 8(388)22-2-50-48</li>
+                            <li>Вахта: 2-93-83</li>
+                        </ul>
+                        <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+                        <p>Задайте вопрос директору: <a href="mailto:director@lyceum-6.ru">director@lyceum-6.ru</a></p>
+                    </div>
+                    <div id="hotline3" class="tab-content">
+                        <h2>Горячая линия</h2>
+                        <p>Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.</p>
+                    </div>
                 </div>
-            </div>
+            </article>
         </div>
-    </div>
+    </main>
 
     <footer>
         <p>© 2025 Лицей №6 им. И.З.Шуклина. Будущее начинается здесь.</p>
@@ -772,6 +143,6 @@
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
-    <script src="scripts.js"></script>
+    <script src="scripts.js" defer></script>
 </body>
 </html>
