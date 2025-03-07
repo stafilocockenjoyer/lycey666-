@@ -43,7 +43,9 @@
         body.light .tab-btn.active { background: #a3bffa; color: #fff; }
         body.light .arrow { background: linear-gradient(45deg, #a3bffa, #b2f2bb); color: #4a5e6e; border: 2px solid #6b7280; }
         body.light .arrow:hover { background: linear-gradient(45deg, #b2f2bb, #a3bffa); border-color: #4a5e6e; }
-        body.light .sidebar { background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+        body.light .sidebar { background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        body.light .accordion-btn { background: #e0e7ff; color: #4a5e6e; }
+        body.light .accordion-content { background: rgba(255, 255, 255, 0.8); }
 
         body.dark { background: none; color: #e0e0e0; }
         body.dark:before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%); z-index: -1; }
@@ -64,6 +66,8 @@
         body.dark .arrow { background: linear-gradient(45deg, #404040, #2d2d2d); color: #e0e0e0; border: 2px solid #555555; }
         body.dark .arrow:hover { background: linear-gradient(45deg, #4d4d4d, #383838); border-color: #666666; }
         body.dark .sidebar { background: #2a2a2a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+        body.dark .accordion-btn { background: #404040; color: #e0e0e0; }
+        body.dark .accordion-content { background: #333333; }
 
         header {
             padding: 40px;
@@ -116,10 +120,11 @@
             gap: 20px;
             position: relative;
             z-index: 1;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
         .card {
             transition: transform 0.3s ease;
-            height: 500px;
+            height: 600px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -316,19 +321,50 @@
         .sidebar {
             position: fixed;
             top: 100px;
-            width: 200px;
+            width: 300px;
+            height: calc(100vh - 120px);
             padding: 20px;
             border-radius: 10px;
             z-index: 2;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
         }
+        .sidebar:hover { transform: scale(1.02); }
         .sidebar-left { left: 20px; }
         .sidebar-right { right: 20px; }
-        .sidebar h3 { margin-bottom: 15px; font-size: 1.3em; }
+        .sidebar h3 { margin-bottom: 15px; font-size: 1.5em; }
         .sidebar ul { padding-left: 0; }
         .sidebar ul li { margin-bottom: 10px; }
-        .calendar { font-size: 0.9em; }
+        .calendar { font-size: 1em; }
+        .weather { margin-top: 20px; }
         .quick-links a { display: block; margin-bottom: 10px; text-decoration: none; }
+        .mini-ticker { margin-top: 20px; }
+        .mini-ticker a { font-size: 0.9em; padding: 5px; background: rgba(163, 191, 250, 0.2); border-radius: 5px; }
+        .question-form { margin-top: 20px; }
+        .question-form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #555555; border-radius: 5px; background: #333333; color: #e0e0e0; }
+        .question-form button { padding: 10px; border: none; border-radius: 5px; background: #404040; color: #fff; cursor: pointer; transition: background 0.3s; }
+        .question-form button:hover { background: #4d4d4d; }
 
+        .accordion-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.3s;
+            margin-bottom: 5px;
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .accordion-content.active { display: block; }
+
+        @media (max-width: 1400px) {
+            .sidebar { width: 250px; }
+        }
         @media (max-width: 1200px) {
             .sidebar { display: none; }
         }
@@ -338,7 +374,7 @@
             .news h2, .card h2 { font-size: 1.5em; }
             .news-ticker a { font-size: 1.2em; width: 200px; }
             .news { min-height: 80px; padding: 15px 50px; }
-            .card { height: 300px; }
+            .card { height: 400px; }
             .tab-btn { padding: 8px 15px; margin-right: 5px; }
             .tabs { flex-wrap: wrap; }
             .theme-toggle { top: 10px; right: 10px; }
@@ -364,18 +400,41 @@
     <div class="sidebar sidebar-left">
         <h3>Календарь мероприятий</h3>
         <div class="calendar">
-            <p><strong>10 марта 2025:</strong> Олимпиада по математике</p>
-            <p><strong>15 марта 2025:</strong> День открытых дверей</p>
-            <p><strong>20 марта 2025:</strong> Конкурс "Ученик года"</p>
+            <ul>
+                <li><strong>10 марта 2025:</strong> <a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=104">Олимпиада по математике</a></li>
+                <li><strong>15 марта 2025:</strong> День открытых дверей</li>
+                <li><strong>20 марта 2025:</strong> Конкурс "Ученик года"</li>
+                <li><strong>25 марта 2025:</strong> <a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=103">День здоровья</a></li>
+                <li><strong>30 марта 2025:</strong> Выставка научных проектов</li>
+            </ul>
+        </div>
+        <div class="weather">
+            <h3>Погода в Горно-Алтайске</h3>
+            <p>Сегодня, 6 марта 2025:</p>
+            <p>Температура: -5°C до +2°C</p>
+            <p>Осадки: Лёгкий снег</p>
+            <p>Ветер: 3-5 м/с</p>
+            <p><a href="https://www.gismeteo.ru/weather-gorno-altaysk-11308/">Подробный прогноз</a></p>
         </div>
     </div>
 
     <div class="sidebar sidebar-right">
-        <h3>Быстрые ссылки</h3>
+        <h3>Полезное</h3>
         <div class="quick-links">
             <a href="https://t.me/Licey6_GA">Telegram</a>
             <a href="mailto:lyceum-6@mail.ru">Эл. почта</a>
             <a href="tel:+83882225217">Телефон директора</a>
+            <a href="https://lyceum-6.edusite.ru/p16aa1.html">Электронный дневник</a>
+        </div>
+        <div class="mini-ticker">
+            <h4>Последние новости</h4>
+            <a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=104">Победа в "Учитель года"</a>
+            <a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=103">День здоровья</a>
+        </div>
+        <div class="question-form">
+            <h4>Задать вопрос</h4>
+            <textarea placeholder="Ваш вопрос"></textarea>
+            <button onclick="submitQuestion()">Отправить</button>
         </div>
     </div>
 
@@ -384,10 +443,11 @@
         <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
         <div class="news-ticker" id="newsTicker">
             <div class="ticker-content" id="tickerContent">
-                <h3><a href="https://lyceum-6.edusite.ru/p1aa1.html">Всероссийская олимпиада школьников началась!</a></h3>
+                <h3><a href="https://lyceum-6.edusite.ru/p1aa1.html">Начало Всероссийской олимпиады школьников</a></h3>
                 <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=104">Победа в конкурсе "Учитель года 2025"</a></h3>
-                <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=103">День здоровья в лицее</a></h3>
-                <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=102">Выставка научных проектов</a></h3>
+                <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=103">День здоровья прошёл на ура!</a></h3>
+                <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=102">Выставка научных проектов учащихся</a></h3>
+                <h3><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=101">Итоги школьного этапа олимпиад</a></h3>
             </div>
         </div>
         <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
@@ -403,29 +463,46 @@
             <div class="tab-content-wrapper">
                 <div id="about1" class="tab-content active">
                     <h2>О нас</h2>
-                    <p>Лицей №6 им. И.З. Шуклина — одно из ведущих образовательных учреждений Горно-Алтайска. Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО с углублённым изучением физико-математических и естественнонаучных дисциплин.</p>
-                    <p><strong>История:</strong> Основан в 1970 году как школа с математическим уклоном. В 1995 году получил статус лицея и был назван в честь И.З. Шуклина, выдающегося педагога и учёного.</p>
-                    <p><strong>Миссия:</strong> Формирование интеллектуальной элиты региона через качественное образование и развитие личности.</p>
+                    <p>Лицей №6 им. И.З. Шуклина — ведущее образовательное учреждение Горно-Алтайска. Более 1400 учащихся и 90 педагогов. Углублённое изучение физико-математических и естественнонаучных дисциплин.</p>
+                    <p><strong>История:</strong> Основан в 1970 году, статус лицея с 1995 года. Назван в честь И.З. Шуклина.</p>
+                    <p><strong>Миссия:</strong> Развитие интеллектуальной элиты региона.</p>
+                    <p><strong>Структура:</strong> 3 корпуса, 45 классов, 2 спортзала, библиотека.</p>
+                    <button class="accordion-btn" onclick="toggleAccordion(this)">Состав педагогов</button>
+                    <div class="accordion-content">
+                        <ul>
+                            <li>Зырянова Г.И. — директор, учитель математики</li>
+                            <li>Иванова Е.А. — учитель физики, "Учитель года 2025"</li>
+                            <li>Петров А.В. — учитель биологии</li>
+                            <li><a href="https://lyceum-6.edusite.ru/p2aa1.html">Полный список</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div id="admission1" class="tab-content">
                     <h2>Информация о приёме</h2>
-                    <p>Приём в лицей осуществляется на конкурсной основе. Для поступления в 1-й класс необходимо подать заявление с 1 апреля по 30 июня. Для 5-11 классов — с 1 июля по 15 августа при наличии свободных мест.</p>
+                    <p>Приём в 1-й класс: 1 апреля — 30 июня. 5-11 классы: 1 июля — 15 августа.</p>
                     <ul>
-                        <li><strong>Документы:</strong> Заявление, копия свидетельства о рождении, медицинская карта.</li>
-                        <li><strong>Тестирование:</strong> Математика и русский язык для 5-9 классов.</li>
-                        <li><a href="https://lyceum-6.edusite.ru/p13aa1.html">Подробности и бланки</a></li>
+                        <li><strong>Документы:</strong> Заявление, копия свидетельства о рождении, медкарта.</li>
+                        <li><strong>Тестирование:</strong> Математика, русский язык.</li>
+                        <li><a href="https://lyceum-6.edusite.ru/p13aa1.html">Бланки и правила</a></li>
+                        <li><a href="https://gosuslugi.ru">Подача через Госуслуги</a></li>
                     </ul>
                 </div>
                 <div id="education1" class="tab-content">
                     <h2>Образовательные услуги</h2>
-                    <p>Мы предлагаем программы начального, основного и среднего общего образования. Углублённое изучение:</p>
+                    <p>Программы по ФГОС НОО, ООО, СОО:</p>
                     <ul>
-                        <li>Математика</li>
-                        <li>Физика</li>
-                        <li>Биология</li>
-                        <li>Химия</li>
+                        <li>Математика (углублённо)</li>
+                        <li>Физика (углублённо)</li>
+                        <li>Биология и химия</li>
                     </ul>
-                    <p>Дополнительно: кружки робототехники, шахмат, английского языка. Оцените нас: <a href="https://bus.gov.ru/qrcode/rate/232962">QR-код</a>.</p>
+                    <p><strong>Внеурочная деятельность:</strong></p>
+                    <ul>
+                        <li>Робототехника</li>
+                        <li>Шахматы</li>
+                        <li>Английский клуб</li>
+                    </ul>
+                    <p><a href="https://lyceum-6.edusite.ru/p4aa1.html">Подробности программ</a></p>
+                    <button onclick="showPopup('educationPopup')">Подробнее о стандартах</button>
                 </div>
             </div>
         </div>
@@ -439,12 +516,12 @@
             <div class="tab-content-wrapper">
                 <div id="schedule2" class="tab-content active">
                     <h2>Расписание</h2>
-                    <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
+                    <p>6-дневная неделя (кроме начальной школы):</p>
                     <ul>
                         <li>1 смена: 8:00 - 13:05</li>
                         <li>2 смена: 14:00 - 19:05</li>
                     </ul>
-                    <p>Расписание звонков:</p>
+                    <p>Звонки:</p>
                     <ul>
                         <li>1 урок: 8:00 - 8:45</li>
                         <li>2 урок: 8:55 - 9:40</li>
@@ -454,13 +531,19 @@
                 </div>
                 <div id="founder2" class="tab-content">
                     <h2>Учредитель</h2>
-                    <p>Администрация города Горно-Алтайска. Адрес: 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 18. Мэр: Сафронова Ольга Александровна.</p>
-                    <p>Контакты: тел. (38822) 2-41-53, факс (38822) 2-65-50, <a href="http://www.gornoaltaysk.ru">сайт</a>, email: office@admin.gorny.ru</p>
+                    <p>Администрация г. Горно-Алтайска:</p>
+                    <ul>
+                        <li>Адрес: пр. Коммунистический, 18</li>
+                        <li>Мэр: Сафронова О.А.</li>
+                        <li>Тел: <a href="tel:+83882224153">(38822) 2-41-53</a></li>
+                        <li><a href="http://www.gornoaltaysk.ru">Сайт</a></li>
+                    </ul>
                 </div>
                 <div id="support2" class="tab-content">
                     <h2>Поддержка учащихся</h2>
-                    <p>Телефон доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
-                    <p>Психологическая помощь доступна в кабинете 305 по будням с 14:00 до 16:00.</p>
+                    <p>Телефон доверия: <a href="tel:+88002000122">8-800-2000-122</a></p>
+                    <p>«Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a></p>
+                    <p>Психолог: каб. 305, 14:00-16:00.</p>
                 </div>
             </div>
         </div>
@@ -474,18 +557,18 @@
             <div class="tab-content-wrapper">
                 <div id="contacts3" class="tab-content active">
                     <h2>Контакты</h2>
-                    <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
+                    <p><strong>Адрес:</strong> 649000, г. Горно-Алтайск, пр. Коммунистический, 63</p>
                     <p><strong>Телефоны:</strong></p>
                     <ul>
-                        <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна</li>
-                        <li>Методкабинет: 8(388)22-2-50-48</li>
-                        <li>Вахта: 2-93-83</li>
+                        <li>Директор: <a href="tel:+83882225217">8(388)22-2-52-17</a> — Зырянова Г.И.</li>
+                        <li>Методкабинет: <a href="tel:+83882225048">8(388)22-2-50-48</a></li>
+                        <li>Вахта: <a href="tel:+83882229383">2-93-83</a></li>
                     </ul>
                     <p><strong>Email:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
                 </div>
                 <div id="hotline3" class="tab-content">
                     <h2>Горячая линия</h2>
-                    <p>По вопросам незаконных сборов:</p>
+                    <p>По вопросам сборов:</p>
                     <ul>
                         <li>Пивоварова Е.В.: <a href="tel:+83882222989">8(38822)-2-29-89</a></li>
                         <li>Табакаева О.В.: <a href="tel:+83882222265">8(388)22-2-22-65</a></li>
@@ -497,7 +580,8 @@
                     <ul>
                         <li><a href="https://lyceum-6.edusite.ru/DswMedia/ustav.pdf">Устав лицея</a></li>
                         <li><a href="https://lyceum-6.edusite.ru/DswMedia/licenziya.pdf">Лицензия</a></li>
-                        <li><a href="https://lyceum-6.edusite.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила внутреннего распорядка</a></li>
+                        <li><a href="https://lyceum-6.edusite.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила распорядка</a></li>
+                        <li><a href="https://lyceum-6.edusite.ru/DswMedia/otchet_o_rezultatakh_samoobsledovaniya.pdf">Отчёт о самообследовании</a></li>
                     </ul>
                 </div>
             </div>
@@ -512,29 +596,69 @@
             <div class="tab-content-wrapper">
                 <div id="achievements4" class="tab-content active">
                     <h2>Достижения</h2>
-                    <p>Наши ученики ежегодно занимают призовые места на Всероссийской олимпиаде школьников:</p>
+                    <p>Призовые места на олимпиадах:</p>
                     <ul>
-                        <li>2024: 5 победителей по математике</li>
-                        <li>2023: 3 призёра по физике</li>
-                        <li>2022: 2 победителя по биологии</li>
+                        <li>2024: 5 победителей (математика)</li>
+                        <li>2023: 3 призёра (физика)</li>
+                        <li>2022: 2 победителя (биология)</li>
                     </ul>
                     <p>Учителя: "Учитель года 2025" — Иванова Е.А.</p>
+                    <p><a href="https://lyceum-6.edusite.ru/p5aa1.html">Все достижения</a></p>
                 </div>
                 <div id="life4" class="tab-content">
                     <h2>Жизнь лицея</h2>
-                    <p>Мы проводим:</p>
+                    <p>Мероприятия:</p>
                     <ul>
                         <li>День знаний — 1 сентября</li>
                         <li>Фестиваль науки — октябрь</li>
                         <li>Новогодний бал — декабрь</li>
+                        <li><a href="https://lyceum-6.edusite.ru/news/p11aa1.html/id=103">День здоровья</a></li>
                     </ul>
-                    <p>Фото с мероприятий: <a href="https://lyceum-6.edusite.ru/p15aa1.html">Галерея</a></p>
+                    <p><a href="https://lyceum-6.edusite.ru/p15aa1.html">Галерея</a></p>
                 </div>
                 <div id="parents4" class="tab-content">
                     <h2>Родителям</h2>
-                    <p><strong>Питание:</strong> Стоимость обеда — 70 руб./день. Меню доступно в столовой.</p>
-                    <p><strong>Собрания:</strong> Первое собрание — 10 сентября в 18:00.</p>
-                    <p><strong>Электронный дневник:</strong> <a href="https://lyceum-6.edusite.ru/p16aa1.html">Ссылка</a></p>
+                    <p><strong>Питание:</strong> Обед — 70 руб./день. <a href="https://lyceum-6.edusite.ru/p6aa1.html">Меню</a></p>
+                    <p><strong>Собрания:</strong> 10 сентября, 18:00</p>
+                    <p><strong>Безопасность:</strong> Видеонаблюдение, пропускной режим.</p>
+                    <p><a href="https://lyceum-6.edusite.ru/p16aa1.html">Электронный дневник</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card tab-group-5">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'students5', 'tab-group-5')">Ученикам</button>
+                <button class="tab-btn" onclick="openTab(event, 'projects5', 'tab-group-5')">Проекты</button>
+                <button class="tab-btn" onclick="openTab(event, 'partners5', 'tab-group-5')">Партнёры</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="students5" class="tab-content active">
+                    <h2>Ученикам</h2>
+                    <p><strong>Правила:</strong> Форма, дисциплина.</p>
+                    <p><strong>Ресурсы:</strong></p>
+                    <ul>
+                        <li><a href="https://uchi.ru">Учи.ру</a></li>
+                        <li><a href="https://resh.edu.ru">РЭШ</a></li>
+                    </ul>
+                    <p><strong>Кружки:</strong> Робототехника (Пн, 15:00), шахматы (Ср, 14:00).</p>
+                </div>
+                <div id="projects5" class="tab-content">
+                    <h2>Проекты</h2>
+                    <p>Научные работы:</p>
+                    <ul>
+                        <li>"Экология Алтая" — 2024</li>
+                        <li>"Роботы в школе" — 2023</li>
+                    </ul>
+                    <p><a href="https://lyceum-6.edusite.ru/p7aa1.html">Подробности</a></p>
+                </div>
+                <div id="partners5" class="tab-content">
+                    <h2>Партнёры</h2>
+                    <p>Сотрудничество:</p>
+                    <ul>
+                        <li><a href="https://gorno-altaisk.ru">Горно-Алтайский госуниверситет</a></li>
+                        <li>Центр "Сириус"</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -542,7 +666,7 @@
 
     <footer>
         <p>© 2025 Лицей №6 им. И.З.Шуклина. Будущее начинается здесь.</p>
-        <p>Следите за нами в Telegram: <a href="https://t.me/Licey6_GA">@Licey6_GA</a></p>
+        <p>Telegram: <a href="https://t.me/Licey6_GA">@Licey6_GA</a></p>
     </footer>
 
     <div class="login-form" id="loginForm">
@@ -564,15 +688,50 @@
     </div>
 
     <div class="popup" id="welcomePopup">
-        <h3>Обновления сайта за 25 февраля 2025</h3>
+        <h3>Обновления сайта за 6 марта 2025</h3>
         <ul>
-            <li>Улучшена читаемость текста новостей в тёмной теме.</li>
-            <li>Добавлено всплывающее окно с обновлениями.</li>
-            <li>Добавлены новые разделы и боковые панели.</li>
+            <li>Добавлены новые разделы и интерактив.</li>
+            <li>Улучшены боковые панели с погодой.</li>
+            <li>Больше информации и ссылок.</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
+    <div class="popup" id="educationPopup">
+        <h3>Образовательные стандарты</h3>
+        <p>Лицей работает по ФГОС:</p>
+        <ul>
+            <li>НОО: <a href="https://lyceum-6.edusite.ru/DswMedia/fgos_noo.pdf">Подробности</a></li>
+            <li>ООО: <a href="https://lyceum-6.edusite.ru/DswMedia/fgos_ooo.pdf">Подробности</a></li>
+            <li>СОО: <a href="https://lyceum-6.edusite.ru/DswMedia/fgos_soo.pdf">Подробности</a></li>
+        </ul>
+        <button onclick="closePopup('educationPopup')">Закрыть</button>
+    </div>
+
+    <script>
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            content.classList.toggle('active');
+        }
+
+        function showPopup(id) {
+            document.getElementById(id).classList.add('active');
+            document.getElementById('popupOverlay').classList.add('active');
+            document.body.classList.add('popup-active');
+        }
+
+        function closePopup(id) {
+            document.getElementById(id).classList.remove('active');
+            document.getElementById('popupOverlay').classList.remove('active');
+            document.body.classList.remove('popup-active');
+        }
+
+        function submitQuestion() {
+            const question = document.querySelector('.question-form textarea').value;
+            if (question) alert('Вопрос отправлен: ' + question);
+            else alert('Введите вопрос!');
+        }
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>
