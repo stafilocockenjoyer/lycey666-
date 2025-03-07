@@ -32,7 +32,7 @@ const clickbaitPhrases = [
 // Функция для получения случайной кликбейт-фразы
 const getRandomClickbait = () => clickbaitPhrases[Math.floor(Math.random() * clickbaitPhrases.length)];
 
-// Загрузка новостей из Firebase
+// Загрузка новостей из Firebase с fallback
 function loadNewsFromFirebase() {
     newsRef.on('value', (snapshot) => {
         const data = snapshot.val();
@@ -48,18 +48,13 @@ function loadNewsFromFirebase() {
                 tickerContent.appendChild(h3);
             });
         } else {
-            // Начальные новости, если база пуста
+            console.log('База данных пуста, добавляю начальные новости');
             const initialNews = [
-                { text: "Дамир Чумакаев застрелил родителей после проёба катки в Доте", link: "https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" },
-                { text: "Елизавета Берсенёва зашла на порнхаб", link: "https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" },
-                { text: "Вова из 11Б подрался с директором из-за шмоток", link: "https://rt.pornhub.com" },
-                { text: "Илья Ускоев изнасиловал маленького ребенка", link: "https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" },
-                { text: "Айсын Ерленбаев раздавил стол директора дунув на него", link: "https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" },
-                { text: "Назар Сидорков подвергся сексуальному насилию от", link: "https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" },
                 { text: "Начало Всероссийской олимпиады 2025", link: "http://www.lyceum-6.edusite.ru/p1aa1.html" },
                 { text: "Победа в 'Учитель года 2025'", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
-                { text: "Обновление кабинета алтайского языка", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
-                { text: "День открытых дверей 15 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" }
+                { text: "День здоровья 25 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "Выставка проектов 30 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "Обновление кабинета алтайского языка", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" }
             ];
             initialNews.forEach(news => newsRef.push(news));
         }
@@ -67,7 +62,17 @@ function loadNewsFromFirebase() {
         updateNewsList();
     }, (error) => {
         console.error('Ошибка загрузки новостей:', error);
-        alert('Не удалось загрузить новости: ' + error.message);
+        alert('Не удалось загрузить новости из Firebase. Использую локальный fallback.');
+        tickerContent.innerHTML = '';
+        const fallbackNews = [
+            { text: "Начало олимпиады", link: "#" },
+            { text: "День открытых дверей", link: "#" }
+        ];
+        fallbackNews.forEach(news => {
+            const h3 = document.createElement('h3');
+            h3.innerHTML = `<a href="${news.link}">${news.text}</a>`;
+            tickerContent.appendChild(h3);
+        });
     });
 }
 
@@ -87,30 +92,41 @@ function toggleTheme() {
 // Открытие вкладок
 function openTab(event, tabId, group) {
     const tabContents = document.querySelectorAll(`#${group} .tab-content`);
+    const tabButtons = document.querySelectorAll(`#${group} .tab-btn`);
     tabContents.forEach(content => content.classList.remove('active'));
-    if (tabId === group) {
-        // Возврат к начальному состоянию (закрытие вкладок)
-        document.querySelector(`#${group} .tabs .tab-btn`).classList.add('active');
+    tabButtons.forEach(button => button.classList.remove('active'));
+    if (tabId === 'close') {
+        // Сброс всех вкладок
+        document.querySelector(`#${group} .tab-btn`).classList.add('active');
+        document.querySelector(`#${group} .tab-content`).classList.add('active');
     } else {
         document.getElementById(tabId).classList.add('active');
-        const tabButtons = document.querySelectorAll(`#${group} .tab-btn`);
-        tabButtons.forEach(button => button.classList.remove('active'));
         event.target.classList.add('active');
     }
 }
 
 function openInnerTab(event, tabId, group) {
     const tabContents = document.querySelectorAll(`#${group} .tab-content`);
+    const tabButtons = document.querySelectorAll(`#${group} .inner-tabs .tab-btn`);
     tabContents.forEach(content => content.classList.remove('active'));
-    if (tabId === `${group}-default`) {
-        // Возврат к начальному состоянию
+    tabButtons.forEach(button => button.classList.remove('active'));
+    if (tabId === 'close') {
+        // Сброс внутренних вкладок
         document.querySelector(`#${group} .inner-tabs .tab-btn`).classList.add('active');
+        document.querySelector(`#${group} .tab-content`).classList.add('active');
     } else {
         document.getElementById(tabId).classList.add('active');
-        const tabButtons = document.querySelectorAll(`#${group} .inner-tabs .tab-btn`);
-        tabButtons.forEach(button => button.classList.remove('active'));
         event.target.classList.add('active');
     }
+}
+
+// Закрытие вкладок
+function closeTabs(group) {
+    openTab({ target: document.querySelector(`#${group} .tab-btn`) }, 'close', group);
+}
+
+function closeInnerTabs(group) {
+    openInnerTab({ target: document.querySelector(`#${group} .inner-tabs .tab-btn`) }, 'close', group);
 }
 
 // Прокрутка новостей
@@ -143,7 +159,7 @@ function closeLoginForm() {
     document.body.classList.remove('popup-active');
 }
 
-// Логин администратора
+// Логин администратора (с упрощённым вариантом для теста)
 function login() {
     const email = document.getElementById('loginInput').value.trim();
     const password = document.getElementById('passwordInput').value.trim();
@@ -151,16 +167,32 @@ function login() {
 
     if (!email || !password) return alert('Пожалуйста, введите email и пароль!');
 
+    // Упрощённый вход для теста
+    if (email === 'admin' && password === '123') {
+        isAdminLoggedIn = true;
+        closeLoginForm();
+        document.getElementById('adminPanel').classList.add('active');
+        document.querySelector('.login-btn').style.display = 'none';
+        makeDraggableAndResizable(document.getElementById('adminPanel'));
+        updateNewsList();
+        return;
+    }
+
     auth.signInWithEmailAndPassword(email, password)
         .then(() => {
             auth.setPersistence(rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+            isAdminLoggedIn = true;
             closeLoginForm();
+            document.getElementById('adminPanel').classList.add('active');
+            document.querySelector('.login-btn').style.display = 'none';
+            makeDraggableAndResizable(document.getElementById('adminPanel'));
+            updateNewsList();
         })
         .catch(error => {
             let errorMessage = 'Ошибка входа: ';
             switch (error.code) {
                 case 'auth/invalid-email': errorMessage += 'Неверный формат email.'; break;
-                case 'auth/user-not-found': errorMessage += 'Пользователь не найден.'; break;
+                case 'auth/user-not-found': errorMessage += 'Пользователь не найден. Зарегистрируйте email (например, admin@lyceum-6.ru) в Firebase Console.'; break;
                 case 'auth/wrong-password': errorMessage += 'Неверный пароль.'; break;
                 case 'auth/invalid-credential': errorMessage += 'Неверные учетные данные.'; break;
                 default: errorMessage += error.message;

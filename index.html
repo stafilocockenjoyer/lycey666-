@@ -126,7 +126,7 @@
         }
         .news-ticker {
             white-space: nowrap;
-            overflow-x: auto;
+            overflow-x: hidden;
             position: relative;
             flex-grow: 1;
             display: flex;
@@ -199,6 +199,7 @@
         .tabs { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
         .tab-btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
         .tab-btn.active { font-weight: bold; }
+        .tab-close-btn { padding: 5px 10px; margin-left: 10px; }
         .tab-content-wrapper { flex-grow: 1; overflow-y: auto; }
         .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; }
         .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
@@ -215,6 +216,7 @@
             cursor: pointer;
             z-index: 10;
             transition: background 0.3s, transform 0.2s, border-color 0.3s;
+            display: none; /* Опционально скрыто */
         }
         .arrow:hover { transform: translateY(-50%) scale(1.1); }
         .arrow-left { left: 5px; }
@@ -301,12 +303,15 @@
             z-index: 1003;
             transition: background 0.3s;
             left: 20px;
+            display: block;
         }
         .sidebar-toggle-right {
             left: auto;
             right: 20px;
         }
         .sidebar-toggle:hover { opacity: 0.9; }
+        .sidebar-left.active + .sidebar-toggle-left,
+        .sidebar-right.active + .sidebar-toggle-right { display: none; }
 
         .login-form, .admin-panel, .popup {
             position: fixed;
@@ -438,6 +443,7 @@
         <div class="card tab-group-1">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О лицее</button>
+                <button class="tab-close-btn" onclick="closeTabs('tab-group-1')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="about1" class="tab-content active">
@@ -446,6 +452,7 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'about-content', 'tab-group-1')">О нас</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'history-content', 'tab-group-1')">История</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'education-content', 'tab-group-1')">Образовательные услуги</button>
+                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-1')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="about-content" class="tab-content active">
@@ -477,6 +484,7 @@
         <div class="card tab-group-2">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'organization2', 'tab-group-2')">Организация обучения</button>
+                <button class="tab-close-btn" onclick="closeTabs('tab-group-2')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="organization2" class="tab-content active">
@@ -485,6 +493,7 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'schedule-content', 'tab-group-2')">Расписание</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'admission-content', 'tab-group-2')">Приём</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'support-content', 'tab-group-2')">Поддержка учащихся</button>
+                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-2')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="schedule-content" class="tab-content active">
@@ -511,6 +520,7 @@
         <div class="card tab-group-3">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты и документы</button>
+                <button class="tab-close-btn" onclick="closeTabs('tab-group-3')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="contacts3" class="tab-content active">
@@ -519,6 +529,7 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'contacts-content', 'tab-group-3')">Контакты</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'hotline-content', 'tab-group-3')">Горячая линия</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'documents-content', 'tab-group-3')">Документы</button>
+                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-3')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="contacts-content" class="tab-content active">
@@ -549,6 +560,7 @@
         <div class="card tab-group-4">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'life4', 'tab-group-4')">Жизнь лицея</button>
+                <button class="tab-close-btn" onclick="closeTabs('tab-group-4')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="life4" class="tab-content active">
@@ -557,6 +569,7 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'achievements-content', 'tab-group-4')">Достижения</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'events-content', 'tab-group-4')">Мероприятия</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'parents-content', 'tab-group-4')">Родителям</button>
+                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-4')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="achievements-content" class="tab-content active">
@@ -584,6 +597,7 @@
         <div class="card tab-group-5">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'students5', 'tab-group-5')">Учащимся и партнёрам</button>
+                <button class="tab-close-btn" onclick="closeTabs('tab-group-5')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="students5" class="tab-content active">
@@ -592,6 +606,7 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'students-content', 'tab-group-5')">Ученикам</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'projects-content', 'tab-group-5')">Проекты</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'partners-content', 'tab-group-5')">Партнёры</button>
+                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-5')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="students-content" class="tab-content active">
@@ -645,18 +660,16 @@
     <div class="popup" id="welcomePopup">
         <h3>Обновления за 7 марта 2025</h3>
         <ul>
-            <li>Убрана форма авторизации</li>
             <li>Исправлена лента новостей</li>
             <li>Добавлена возможность закрытия вкладок</li>
-            <li>Убраны лишние элементы внизу</li>
-            <li>Исправлено положение кнопок панелей</li>
+            <li>Исправлены кнопки боковых панелей</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <script src="scripts.js"></script>
 </body>
 </html>
