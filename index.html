@@ -18,91 +18,91 @@
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
     </header>
 
-    <main>
-        <section class="news">
-            <h2>Новости лицея</h2>
-            <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
-            <div class="news-ticker" id="newsTicker">
-                <div class="ticker-content" id="tickerContent"></div>
+    <div class="news">
+        <h2>Новости лицея</h2>
+        <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
+        <div class="news-ticker" id="newsTicker">
+            <div class="ticker-content" id="tickerContent">
+                <!-- Новости будут загружаться динамически -->
             </div>
-            <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
-        </section>
-
-        <div class="container">
-            <article class="card tab-group-1">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
-                    <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
-                    <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
-                </div>
-                <div class="tab-content-wrapper">
-                    <div id="about1" class="tab-content active">
-                        <h2>О нас</h2>
-                        <p>Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.</p>
-                    </div>
-                    <div id="admission1" class="tab-content">
-                        <h2>Информация о приёме</h2>
-                        <p>Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a></p>
-                    </div>
-                    <div id="education1" class="tab-content">
-                        <h2>Образовательные услуги</h2>
-                        <p>Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!</p>
-                    </div>
-                </div>
-            </article>
-
-            <article class="card tab-group-2">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание и жизнь лицея</button>
-                    <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
-                    <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
-                </div>
-                <div class="tab-content-wrapper">
-                    <div id="schedule2" class="tab-content active">
-                        <h2>Расписание и жизнь лицея</h2>
-                        <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
-                        <ul>
-                            <li>1 смена: 8:00 - 13:05</li>
-                            <li>2 смена: 14:00 - 19:05</li>
-                        </ul>
-                    </div>
-                    <div id="founder2" class="tab-content">
-                        <h2>Учредитель</h2>
-                        <p>Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: <a href="mailto:adm@gorny-altay.ru">adm@gorny-altay.ru</a></p>
-                    </div>
-                    <div id="support2" class="tab-content">
-                        <h2>Поддержка учащихся</h2>
-                        <p>Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
-                    </div>
-                </div>
-            </article>
-
-            <article class="card tab-group-3">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
-                    <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
-                </div>
-                <div class="tab-content-wrapper">
-                    <div id="contacts3" class="tab-content active">
-                        <h2>Контакты</h2>
-                        <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
-                        <p><strong>Телефоны:</strong></p>
-                        <ul>
-                            <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
-                            <li>Методкабинет: 8(388)22-2-50-48</li>
-                            <li>Вахта: 2-93-83</li>
-                        </ul>
-                        <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
-                        <p>Задайте вопрос директору: <a href="mailto:director@lyceum-6.ru">director@lyceum-6.ru</a></p>
-                    </div>
-                    <div id="hotline3" class="tab-content">
-                        <h2>Горячая линия</h2>
-                        <p>Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.</p>
-                    </div>
-                </div>
-            </article>
         </div>
-    </main>
+        <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
+    </div>
+
+    <div class="container">
+        <div class="card tab-group-1">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
+                <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
+                <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="about1" class="tab-content active">
+                    <h2>О нас</h2>
+                    <p>Более 1400 учащихся и 90 педагогов создают будущее. Мы работаем по ФГОС НОО и ФГОС ООО, с углублённой подготовкой по физико-математическим и естественнонаучным предметам. Лицей — лидер города, подтверждённый аккредитацией и лицензией.</p>
+                </div>
+                <div id="admission1" class="tab-content">
+                    <h2>Информация о приёме</h2>
+                    <p>Уважаемые посетители сайта, для вас открыта новая электронная услуга «Прием обращений граждан». Выполнив клик по иконке, вы перейдёте на страницу обращения, где в электронной форме зададите вопрос, оставите предложение или жалобу конкретному должностному лицу. После обработки материала вам будет отправлен ответ. Федеральный закон от 02.05.2006 N 59-ФЗ (ред. от 27.11.2017) "О порядке рассмотрения обращений граждан Российской Федерации". <a href="https://lyceum-6.ru/obrashcheniya-grazhdan">Подробнее...</a></p>
+                </div>
+                <div id="education1" class="tab-content">
+                    <h2>Образовательные услуги</h2>
+                    <p>Чтобы оценить условия предоставления образовательных услуг, наведите камеру вашего телефона и сканируйте QR-код или перейдите по ссылке: <a href="https://bus.gov.ru/qrcode/rate/232962">https://bus.gov.ru/qrcode/rate/232962</a>. Мы стремимся к инновациям и качеству образования!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card tab-group-2">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание и жизнь лицея</button>
+                <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
+                <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="schedule2" class="tab-content active">
+                    <h2>Расписание и жизнь лицея</h2>
+                    <p>Занятия проходят по 6-дневной неделе (кроме начальной школы и 5-6 классов) в две смены:</p>
+                    <ul>
+                        <li>1 смена: 8:00 - 13:05</li>
+                        <li>2 смена: 14:00 - 19:05</li>
+                    </ul>
+                </div>
+                <div id="founder2" class="tab-content">
+                    <h2>Учредитель</h2>
+                    <p>Учредитель - Исполнительно-распорядительный орган местного самоуправления - администрация города Горно-Алтайска. Адрес: 649000, Российская Федерация, Республика Алтай, город Горно-Алтайск, проспект Коммунистический 18. Сафронова Ольга Александровна, Мэр города Горно-Алтайска. Телефоны: тел. приёмной (38822)2-41-53, факс (38822) 2-65-50. Сайт: <a href="http://www.gornoaltaysk.ru">http://www.gornoaltaysk.ru</a>. E-Mail: office@admin.gorny.ru</p>
+                </div>
+                <div id="support2" class="tab-content">
+                    <h2>Поддержка учащихся</h2>
+                    <p>Друзья! У каждого из нас бывают ситуации, в которых трудно разобраться. Разговор с понимающим собеседником – психологом – важный шаг в решении твоей проблемы. Сделай его – позвони по телефону доверия: <a href="tel:+88002000122">8-800-2000-122</a>. Также доступна телефонная линия «Ребёнок в опасности»: <a href="tel:+83882208777">8(38822) 2-87-77</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card tab-group-3">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
+                <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
+            </div>
+            <div class="tab-content-wrapper">
+                <div id="contacts3" class="tab-content active">
+                    <h2>Контакты</h2>
+                    <p><strong>Адрес:</strong> 649000, Республика Алтай, г. Горно-Алтайск, пр. Коммунистический, 63</p>
+                    <p><strong>Телефоны:</strong></p>
+                    <ul>
+                        <li>Директор: 8(388)22-2-52-17 — Зырянова Галина Ивановна, Почётный работник общего образования, депутат Горно-Алтайского городского Совета</li>
+                        <li>Методкабинет: 8(388)22-2-50-48</li>
+                        <li>Вахта: 2-93-83</li>
+                    </ul>
+                    <p><strong>Электронная почта:</strong> <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+                    <p>Задайте вопрос директору: <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
+                </div>
+                <div id="hotline3" class="tab-content">
+                    <h2>Горячая линия</h2>
+                    <p>Телефоны "Горячей линии" по вопросам незаконных сборов денежных средств: Пивоварова Е.В., начальник МУ "Управление образования г. Горно-Алтайска" — <a href="tel:+83882222989">8(38822)-2-29-89</a>; Табакаева О.В., консультант — <a href="tel:+83882222265">8(388)22-2-22-65</a>. Приказ № 206 от 06.05.2022 г. "О запрете сбора денежных средств" — <a href="https://lyceum-6.ru/prikaz-206">Подробнее...</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <p>© 2025 Лицей №6 им. И.З.Шуклина. Будущее начинается здесь.</p>
@@ -139,10 +139,11 @@
             <li>Добавлена новая электронная услуга «Прием обращений граждан».</li>
             <li>Добавлена возможность подачи заявления в лицей через Госуслуги.</li>
             <li>Лента новостей выравнивается по верхнему краю!</li>
+            <li>HTML и CSS разделены, код оптимизирован.</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
 
-    <script src="scripts.js" defer></script>
+    <script src="scripts.js"></script>
 </body>
 </html>

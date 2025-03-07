@@ -1,3 +1,4 @@
+/* Общие стили */
 * {
     margin: 0;
     padding: 0;
@@ -9,15 +10,96 @@ body {
     line-height: 1.6;
     position: relative;
     min-height: 100vh;
-    transition: color 0.3s, background 0.3s;
-    color: #e0e0e0;
-    background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%);
-    background-attachment: fixed;
+    transition: color 0.3s;
 }
 
+/* Светлая тема */
 body.light {
     background: #f0f4f8;
     color: #4a5e6e;
+}
+
+body.light header {
+    background: linear-gradient(to right, #a3bffa, #b2f2bb);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.light .card {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light .card h2 {
+    color: #6b7280;
+}
+
+body.light .news {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid #a3bffa;
+}
+
+body.light .news h2 {
+    color: #6b7280;
+}
+
+body.light .news-ticker a {
+    color: #4a5e6e;
+    background: rgba(163, 191, 250, 0.2);
+}
+
+body.light .news-ticker a:hover {
+    color: #fff;
+    background: #a3bffa;
+}
+
+body.light .card p, body.light .card ul {
+    color: #5a6a7a;
+}
+
+body.light .highlight {
+    background: #d1e7dd;
+    color: #4a5e6e;
+}
+
+body.light footer {
+    background: #e2e8f0;
+    color: #4a5e6e;
+}
+
+body.light a {
+    color: #6b7280;
+}
+
+body.light a:hover {
+    color: #a3bffa;
+}
+
+body.light .tab-btn {
+    background: #e0e7ff;
+    color: #4a5e6e;
+}
+
+body.light .tab-btn.active {
+    background: #a3bffa;
+    color: #fff;
+}
+
+body.light .arrow {
+    background: linear-gradient(45deg, #a3bffa, #b2f2bb);
+    color: #4a5e6e;
+    border: 2px solid #6b7280;
+}
+
+body.light .arrow:hover {
+    background: linear-gradient(45deg, #b2f2bb, #a3bffa);
+    border-color: #4a5e6e;
+}
+
+/* Тёмная тема */
+body.dark {
+    background: none;
+    color: #e0e0e0;
 }
 
 body.dark:before {
@@ -27,19 +109,92 @@ body.dark:before {
     left: 0;
     width: 100%;
     height: 100%;
+    background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%);
     z-index: -1;
 }
 
+body.dark header {
+    background: transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .card {
+    background: #2a2a2a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .card h2 {
+    color: #cccccc;
+}
+
+body.dark .news {
+    background: #333333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid #404040;
+}
+
+body.dark .news h2 {
+    color: #cccccc;
+}
+
+body.dark .news-ticker a {
+    color: #e0e0e0;
+    background: #404040;
+}
+
+body.dark .news-ticker a:hover {
+    color: #ffffff;
+    background: #4d4d4d;
+}
+
+body.dark .card p, body.dark .card ul {
+    color: #e0e0e0;
+}
+
+body.dark .highlight {
+    background: #404040;
+    color: #e0e0e0;
+}
+
+body.dark footer {
+    background: transparent;
+    color: #e0e0e0;
+}
+
+body.dark a {
+    color: #cccccc;
+}
+
+body.dark a:hover {
+    color: #ffffff;
+}
+
+body.dark .tab-btn {
+    background: #333333;
+    color: #e0e0e0;
+}
+
+body.dark .tab-btn.active {
+    background: #404040;
+    color: #ffffff;
+}
+
+body.dark .arrow {
+    background: linear-gradient(45deg, #404040, #2d2d2d);
+    color: #e0e0e0;
+    border: 2px solid #555555;
+}
+
+body.dark .arrow:hover {
+    background: linear-gradient(45deg, #4d4d4d, #383838);
+    border-color: #666666;
+}
+
+/* Стили для общих элементов */
 header {
     padding: 40px;
     text-align: center;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-header.light {
-    background: linear-gradient(to right, #a3bffa, #b2f2bb);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -55,29 +210,14 @@ header h1 {
     display: flex;
     flex-direction: column;
     position: relative;
-    z-index: 1;
-    background: #333333; /* Исходный фон тёмной темы */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Исходная тень */
-    border: 2px solid #404040; /* Исходная граница */
     border-radius: 10px;
     min-height: 100px;
     padding: 25px 60px;
 }
 
-body.light .news {
-    background: rgba(255, 255, 255, 0.95); /* Исходный фон светлой темы */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 2px solid #a3bffa;
-}
-
 .news h2 {
     margin-bottom: 15px;
     font-size: 2em;
-    color: #cccccc; /* Исходный цвет заголовка в тёмной теме */
-}
-
-body.light .news h2 {
-    color: #6b7280; /* Исходный цвет заголовка в светлой теме */
 }
 
 .news-ticker {
@@ -87,21 +227,12 @@ body.light .news h2 {
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
-    border: 1px solid #404040; /* Добавляем границы для тёмной темы */
-}
-
-body.light .news-ticker {
-    border: 1px solid #a3bffa; /* Границы для светлой темы */
 }
 
 .ticker-content {
     display: inline-flex;
     align-items: flex-start;
-    animation: ticker-scroll 90s linear infinite;
-}
-
-.ticker-content:hover {
-    animation-play-state: paused;
+    animation: ticker-scroll 30s linear infinite;
 }
 
 @keyframes ticker-scroll {
@@ -109,9 +240,14 @@ body.light .news-ticker {
     100% { transform: translateX(-50%); }
 }
 
-body.dark .news-ticker a {
-    color: #e0e0e0; /* Исходный цвет текста в тёмной теме */
-    background: #404040; /* Исходный фон в тёмной теме */
+.news-ticker h3 {
+    display: inline-block;
+    line-height: 1.5;
+    margin-right: 15px;
+    vertical-align: top;
+}
+
+.news-ticker a {
     padding: 15px 20px;
     border-radius: 15px;
     margin-right: 15px;
@@ -123,19 +259,8 @@ body.dark .news-ticker a {
     font-size: 1.4em;
 }
 
-body.dark .news-ticker a:hover {
-    color: #ffffff; /* Исходный цвет при наведении */
-    background: #4d4d4d; /* Исходный фон при наведении */
-}
-
-body.light .news-ticker a {
-    color: #4a5e6e; /* Исходный цвет текста в светлой теме */
-    background: rgba(163, 191, 250, 0.2); /* Исходный фон в светлой теме */
-}
-
-body.light .news-ticker a:hover {
-    color: #fff;
-    background: #a3bffa;
+.news-ticker:hover .ticker-content {
+    animation-play-state: paused;
 }
 
 .container {
@@ -151,8 +276,6 @@ body.light .news-ticker a:hover {
     height: 400px;
     display: flex;
     flex-direction: column;
-    background: #2a2a2a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 25px;
 }
@@ -164,21 +287,11 @@ body.light .news-ticker a:hover {
 .card h2 {
     margin-bottom: 15px;
     font-size: 1.8em;
-    color: #cccccc;
-}
-
-body.light .card h2 {
-    color: #6b7280;
 }
 
 .card p, .card ul {
     font-size: 1.1em;
     animation: fadeIn 0.5s ease-in-out forwards;
-    color: #e0e0e0;
-}
-
-body.light .card p, body.light .card ul {
-    color: #5a6a7a;
 }
 
 @keyframes fadeIn {
@@ -201,8 +314,6 @@ ul li:before {
     border-radius: 5px;
     display: inline-block;
     margin: 10px 0;
-    background: #d1e7dd;
-    color: #4a5e6e;
 }
 
 .contact-info {
@@ -212,29 +323,15 @@ ul li:before {
 
 a {
     font-weight: bold;
-    color: #cccccc;
-}
-
-body.light a {
-    color: #6b7280;
-}
-
-a:hover {
-    color: #a3bffa;
 }
 
 footer {
     text-align: center;
     padding: 20px;
     font-size: 0.9em;
-    color: #e0e0e0;
 }
 
-body.light footer {
-    color: #4a5e6e;
-    background: #e2e8f0;
-}
-
+/* Вкладки */
 .tabs {
     margin-bottom: 20px;
     display: flex;
@@ -247,24 +344,10 @@ body.light footer {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s;
-    background: #333333;
-    color: #e0e0e0;
-}
-
-body.light .tab-btn {
-    background: #e0e7ff;
-    color: #4a5e6e;
 }
 
 .tab-btn.active {
     font-weight: bold;
-    background: #404040;
-    color: #ffffff;
-}
-
-body.light .tab-btn.active {
-    background: #a3bffa;
-    color: #fff;
 }
 
 .tab-content-wrapper {
@@ -284,15 +367,13 @@ body.light .tab-btn.active {
     transform: translateY(0);
 }
 
+/* Стрелки для ленты новостей */
 .arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
-    background: linear-gradient(45deg, #404040, #2d2d2d);
-    color: #e0e0e0;
-    border: 2px solid #555555;
     border-radius: 50%;
     font-size: 24px;
     font-weight: bold;
@@ -302,8 +383,6 @@ body.light .tab-btn.active {
 }
 
 .arrow:hover {
-    background: linear-gradient(45deg, #4d4d4d, #383838);
-    border-color: #666666;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -315,75 +394,39 @@ body.light .tab-btn.active {
     right: 5px;
 }
 
-body.light .arrow {
-    background: linear-gradient(45deg, #a3bffa, #b2f2bb);
-    color: #4a5e6e;
-    border: 2px solid #6b7280;
-}
-
-body.light .arrow:hover {
-    background: linear-gradient(45deg, #b2f2bb, #a3bffa);
-    border-color: #4a5e6e;
-}
-
-.tab-group-1, .tab-group-2, .tab-group-3 {
-    position: relative;
-}
-
-.theme-toggle {
+/* Кнопки переключения темы и входа */
+.theme-toggle, .login-btn {
     position: fixed;
     top: 20px;
-    right: 20px;
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    background: linear-gradient(to right, #333333, #404040);
     color: #fff;
     cursor: pointer;
     font-size: 1em;
     transition: background 0.3s;
     z-index: 1002;
+}
+
+.theme-toggle {
+    right: 20px;
+    background: linear-gradient(to right, #333333, #404040);
 }
 
 .theme-toggle:hover {
     background: #4d4d4d;
 }
 
-body.light .theme-toggle {
-    background: linear-gradient(to right, #a3bffa, #b2f2bb);
-}
-
-body.light .theme-toggle:hover {
-    background: #b2f2bb;
-}
-
 .login-btn {
-    position: fixed;
-    top: 20px;
     right: 180px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
     background: linear-gradient(to right, #555555, #666666);
-    color: #fff;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background 0.3s;
-    z-index: 1002;
 }
 
 .login-btn:hover {
     background: linear-gradient(to right, #666666, #777777);
 }
 
-body.light .login-btn {
-    background: linear-gradient(to right, #a3bffa, #b2f2bb);
-}
-
-body.light .login-btn:hover {
-    background: #a3bffa;
-}
-
+/* Админ-панель */
 .admin-panel {
     display: none;
     position: absolute;
@@ -395,7 +438,6 @@ body.light .login-btn:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     z-index: 1003;
     width: 300px;
-    height: auto;
     min-width: 200px;
     min-height: 200px;
     resize: both;
@@ -414,8 +456,7 @@ body.light .login-btn:hover {
     cursor: grab;
 }
 
-.admin-panel input,
-.admin-panel textarea {
+.admin-panel input, .admin-panel textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -454,14 +495,12 @@ body.light .login-btn:hover {
     margin-bottom: 10px;
     border: 1px solid #555555;
     border-radius: 5px;
-    background: #333333 !important; /* Усиливаем приоритет */
-    color: #e0e0e0 !important; /* Усиливаем приоритет */
+    background: #333333;
+    color: #e0e0e0;
     font-size: 0.9em;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
 }
 
+/* Форма входа */
 .login-form {
     position: fixed;
     top: 50%;
@@ -516,6 +555,7 @@ body.light .login-btn:hover {
     vertical-align: middle;
 }
 
+/* Всплывающее окно */
 .popup {
     position: fixed;
     top: 50%;
@@ -573,6 +613,7 @@ body.light .login-btn:hover {
     background: #4d4d4d;
 }
 
+/* Оверлей */
 .overlay {
     position: fixed;
     top: 0;
@@ -595,11 +636,7 @@ body.popup-active .tab-btn {
     cursor: not-allowed;
 }
 
-.news, .container {
-    position: relative;
-    z-index: 1;
-}
-
+/* Адаптивность */
 @media (max-width: 768px) {
     header h1 {
         font-size: 1.8em;
@@ -641,10 +678,7 @@ body.popup-active .tab-btn {
         left: 10px;
         width: 90%;
     }
-    .login-form {
-        width: 90%;
-    }
-    .popup {
+    .login-form, .popup {
         width: 90%;
         padding: 20px;
     }
