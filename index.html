@@ -77,11 +77,16 @@
             text-align: center;
             position: relative;
             z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
         header h1 {
             font-size: 2.5em;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin: 0 20px;
         }
 
         .news {
@@ -104,6 +109,7 @@
             flex-grow: 1;
             display: flex;
             align-items: flex-start;
+            min-height: 100px; /* Убедимся, что поле не пустое */
         }
         .ticker-content {
             display: inline-flex;
@@ -112,9 +118,15 @@
         }
         @keyframes ticker-scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-100%); }
         }
         .news-ticker:hover .ticker-content { animation-play-state: paused; }
+        .news-ticker:empty::after {
+            content: "Новостей пока нет";
+            color: #ccc;
+            padding: 15px;
+            display: block;
+        }
 
         .container {
             max-width: 1000px;
@@ -357,17 +369,13 @@
         .question-form button:hover { background: #4d4d4d; }
 
         .sidebar-toggle {
-            position: fixed;
-            top: 80px;
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            z-index: 3;
             transition: background 0.3s;
+            margin: 0 10px;
         }
-        .sidebar-toggle-left { left: 20px; }
-        .sidebar-toggle-right { right: 20px; }
         .sidebar-toggle:hover { opacity: 0.9; }
 
         .accordion-btn {
@@ -413,8 +421,9 @@
             .popup h3 { font-size: 1.5em; }
             .popup li { font-size: 1em; }
             .arrow { width: 40px; height: 40px; font-size: 20px; }
-            .sidebar-toggle { top: 60px; }
             .sidebar { top: 120px; height: calc(100vh - 120px); }
+            header { padding: 20px; }
+            .sidebar-toggle { margin: 0 5px; }
         }
     </style>
 </head>
@@ -423,11 +432,10 @@
     <button class="theme-toggle" onclick="toggleTheme()">Светлая тема</button>
     <button class="login-btn" onclick="showLoginForm()">Log in</button>
 
-    <button class="sidebar-toggle sidebar-toggle-left" onclick="toggleSidebar('sidebar-left')"><i class="fas fa-calendar-alt"></i></button>
-    <button class="sidebar-toggle sidebar-toggle-right" onclick="toggleSidebar('sidebar-right')"><i class="fas fa-info-circle"></i></button>
-
     <header>
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
+        <button class="sidebar-toggle sidebar-toggle-left" onclick="toggleSidebar('sidebar-left')"><i class="fas fa-calendar-alt"></i></button>
+        <button class="sidebar-toggle sidebar-toggle-right" onclick="toggleSidebar('sidebar-right')"><i class="fas fa-info-circle"></i></button>
     </header>
 
     <div class="sidebar sidebar-left" id="sidebar-left">
@@ -437,7 +445,7 @@
                 <li class="important"><i class="fas fa-star"></i> <strong>10 марта:</strong> Олимпиада по математике</li>
                 <li><strong>15 марта:</strong> День открытых дверей</li>
                 <li><strong>20 марта:</strong> Конкурс "Ученик года"</li>
-                <li><strong>25 марта:</strong> <a href="https://lyceum6ga.ru/news/p11aa1.html">День здоровья</a></li>
+                <li><strong>25 марта:</strong> <a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></li>
                 <li><strong>30 марта:</strong> Выставка проектов</li>
             </ul>
         </div>
@@ -447,7 +455,7 @@
             <p><strong>Температура:</strong> 0°C до +3°C</p>
             <p><strong>Осадки:</strong> Лёгкий снег</p>
             <p><strong>Ветер:</strong> 2-4 м/с</p>
-            <p><a href="https://www.gismeteo.ru/weather/11308/">Подробный прогноз</a></p>
+            <p><a href="https://www.gismeteo.ru/weather/gorno-altaysk-11308/">Подробный прогноз</a> | <a href="https://yandex.ru/pogoda/gorno-altaysk">Альтернатива</a></p>
         </div>
     </div>
 
@@ -457,7 +465,7 @@
             <h4>Ссылки</h4>
             <a href="mailto:lyceum-6@mail.ru"><i class="fas fa-envelope"></i> Эл. почта</a>
             <a href="tel:+73882225217"><i class="fas fa-phone"></i> Телефон директора</a>
-            <a href="https://lyceum6ga.ru"><i class="fas fa-globe"></i> Официальный сайт</a>
+            <a href="http://www.lyceum-6.edusite.ru"><i class="fas fa-globe"></i> Официальный сайт</a>
         </div>
         <div class="question-form">
             <h4>Задать вопрос</h4>
@@ -471,10 +479,12 @@
         <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
         <div class="news-ticker" id="newsTicker">
             <div class="ticker-content" id="tickerContent">
-                <h3><a href="https://lyceum6ga.ru/p1aa1.html">Начало Всероссийской олимпиады</a></h3>
-                <h3><a href="https://lyceum6ga.ru/news/p11aa1.html">Победа в "Учитель года 2025"</a></h3>
-                <h3><a href="https://lyceum6ga.ru/news/p11aa1.html">День здоровья</a></h3>
-                <h3><a href="https://lyceum6ga.ru/news/p11aa1.html">Выставка проектов</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/p1aa1.html">Начало Всероссийской олимпиады</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Победа в "Учитель года 2025"</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Выставка проектов</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Подготовка к экзаменам</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Итоги недели</a></h3>
             </div>
         </div>
         <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
@@ -492,15 +502,16 @@
                     <h2>О нас</h2>
                     <p class="important"><i class="fas fa-school"></i> Лицей №6 — ведущее учреждение Горно-Алтайска</p>
                     <h3>Основные сведения</h3>
-                    <p>1400 учащихся, 90 педагогов. Углублённое изучение математики и наук.</p>
+                    <p>Расположен по адресу: пр. Коммунистический, 63, г. Горно-Алтайск, Республика Алтай. Обучается 1400 учащихся, работают 90 педагогов. Углублённое изучение математики и естественных наук.</p>
                     <h3>История</h3>
-                    <p>Основан в 1970 году, статус лицея с 1995 года.</p>
+                    <p>Основан в 1970 году, статус лицея присвоен в 1995 году в честь И.З. Шуклина.</p>
                     <button class="accordion-btn" onclick="toggleAccordion(this)">Состав педагогов</button>
                     <div class="accordion-content">
                         <ul>
                             <li class="important">Зырянова Г.И. — директор</li>
-                            <li>Иванова Е.А. — физика</li>
-                            <li><a href="https://lyceum6ga.ru/p2aa1.html">Полный список</a></li>
+                            <li>Иванова Е.А. — учитель физики</li>
+                            <li>Петров В.С. — учитель математики</li>
+                            <li><a href="http://www.lyceum-6.edusite.ru/sveden/employees">Полный список</a></li>
                         </ul>
                     </div>
                 </div>
@@ -510,7 +521,7 @@
                     <h3>Документы</h3>
                     <ul>
                         <li class="important">Заявление, свидетельство о рождении, медкарта</li>
-                        <li><a href="https://lyceum6ga.ru/p13aa1.html">Бланки</a></li>
+                        <li><a href="http://www.lyceum-6.edusite.ru/p13aa1.html">Бланки</a></li>
                     </ul>
                     <h3>Тестирование</h3>
                     <p>Математика, русский язык.</p>
@@ -526,7 +537,7 @@
                     </ul>
                     <h3>Кружки</h3>
                     <p>Робототехника, шахматы.</p>
-                    <p><a href="https://lyceum6ga.ru/p4aa1.html">Подробности</a></p>
+                    <p><a href="http://www.lyceum-6.edusite.ru/p4aa1.html">Подробности</a></p>
                 </div>
             </div>
         </div>
@@ -548,7 +559,7 @@
                     </ul>
                     <h3>Звонки</h3>
                     <p>1 урок: 8:00 - 8:45</p>
-                    <p><a href="https://lyceum6ga.ru/p14aa1.html">Полное расписание</a></p>
+                    <p><a href="http://www.lyceum-6.edusite.ru/p14aa1.html">Полное расписание</a></p>
                 </div>
                 <div id="founder2" class="tab-content">
                     <h2>Учредитель</h2>
@@ -597,9 +608,9 @@
                 <div id="documents3" class="tab-content">
                     <h2>Документы</h2>
                     <ul>
-                        <li class="important"><i class="fas fa-file-alt"></i> <a href="https://lyceum6ga.ru/DswMedia/ustav.pdf">Устав</a></li>
-                        <li><a href="https://lyceum6ga.ru/DswMedia/licenziya.pdf">Лицензия</a></li>
-                        <li><a href="https://lyceum6ga.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила</a></li>
+                        <li class="important"><i class="fas fa-file-alt"></i> <a href="http://www.lyceum-6.edusite.ru/DswMedia/ustav.pdf">Устав</a></li>
+                        <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/licenziya.pdf">Лицензия</a></li>
+                        <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила</a></li>
                     </ul>
                 </div>
             </div>
@@ -626,7 +637,7 @@
                     <p class="important"><i class="fas fa-calendar-day"></i> Мероприятия:</p>
                     <ul>
                         <li class="important">День знаний — 1 сентября</li>
-                        <li><a href="https://lyceum6ga.ru/news/p11aa1.html">День здоровья</a></li>
+                        <li><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></li>
                     </ul>
                 </div>
                 <div id="parents4" class="tab-content">
@@ -634,7 +645,7 @@
                     <p class="important"><i class="fas fa-utensils"></i> Питание: 70 руб./день</p>
                     <h3>Собрания</h3>
                     <p>10 сентября, 18:00</p>
-                    <p><a href="https://lyceum6ga.ru">Официальный сайт</a></p>
+                    <p><a href="http://www.lyceum-6.edusite.ru">Официальный сайт</a></p>
                 </div>
             </div>
         </div>
@@ -700,10 +711,11 @@
     <div class="popup" id="welcomePopup">
         <h3>Обновления за 7 марта 2025</h3>
         <ul>
-            <li>Исправлено положение иконок панелей</li>
-            <li>Обновлена дата и погода</li>
-            <li>Исправлены ссылки</li>
             <li>Добавлена информация о лицее</li>
+            <li>Иконки панелей перенесены в шапку</li>
+            <li>Исправлен Gismeteo</li>
+            <li>Обновлён состав педагогов</li>
+            <li>Исправлена лента новостей</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
@@ -722,6 +734,31 @@
             const question = document.querySelector('.question-form textarea').value;
             if (question) alert('Вопрос отправлен: ' + question);
             else alert('Введите вопрос!');
+        }
+
+        function scrollNews(distance) {
+            const ticker = document.getElementById('newsTicker');
+            ticker.scrollLeft += distance;
+        }
+
+        function addNews() {
+            const text = document.getElementById('newsText').value;
+            const link = document.getElementById('newsLink').value;
+            if (text && link) {
+                const option = document.createElement('option');
+                option.value = link;
+                option.text = text;
+                document.getElementById('newsList').appendChild(option);
+                document.getElementById('newsText').value = '';
+                document.getElementById('newsLink').value = '';
+            }
+        }
+
+        function deleteNews() {
+            const select = document.getElementById('newsList');
+            if (select.selectedIndex >= 0) {
+                select.remove(select.selectedIndex);
+            }
         }
     </script>
     <script src="scripts.js"></script>
