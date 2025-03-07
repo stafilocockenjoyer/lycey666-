@@ -1,4 +1,4 @@
-// Инициализация Firebase с использованием совместимой UMD-версии
+// Конфигурация Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAkoQTZ5pG6v_yjFvj_-HJagLQl3F0jZ80",
     authDomain: "lycey666.firebaseapp.com",
@@ -8,25 +8,31 @@ const firebaseConfig = {
     messagingSenderId: "243803681189",
     appId: "1:243803681189:web:e35a1b402a76ba2d87784c",
     measurementId: "G-DYXLMY1C2L"
-  };
+};
+
+// Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 const newsRef = db.ref('news');
 
+// Глобальные переменные
 let isAdminLoggedIn = false;
 let newsItems = [];
+const ticker = document.getElementById('newsTicker');
+const tickerContent = document.getElementById('tickerContent');
 
+// Список кликбейт-фраз для новостей
 const clickbaitPhrases = [
     " — читать далее...", " — фулл тут...", " — смотри бесплатно...",
     " — шок-контент...", " — кликни сюда...", " — подробности внутри...",
     " — узнай больше...", " — не пропусти!"
 ];
 
-function getRandomClickbait() {
-    return clickbaitPhrases[Math.floor(Math.random() * clickbaitPhrases.length)];
-}
+// Функция для получения случайной кликбейт-фразы
+const getRandomClickbait = () => clickbaitPhrases[Math.floor(Math.random() * clickbaitPhrases.length)];
 
+// Загрузка новостей из Firebase
 function loadNewsFromFirebase() {
     newsRef.on('value', (snapshot) => {
         const data = snapshot.val();
@@ -42,6 +48,7 @@ function loadNewsFromFirebase() {
                 tickerContent.appendChild(h3);
             });
         } else {
+            // Начальные новости, если база пуста
             const initialNews = [
                 { text: "Дамир Чумакаев застрелил родителей после проёба катки в Доте", link: "https://rt.pornhub.com/view_video.php?viewkey=6540c12a59606" },
                 { text: "Елизавета Берсенёва зашла на порнхаб", link: "https://rt.pornhub.com/view_video.php?viewkey=64baea8eb7be4" },
@@ -60,77 +67,70 @@ function loadNewsFromFirebase() {
     });
 }
 
+// Переключение темы
 function toggleTheme() {
     const body = document.body;
     const button = document.querySelector('.theme-toggle');
     if (body.classList.contains('light')) {
-        body.classList.remove('light');
-        body.classList.add('dark');
+        body.classList.replace('light', 'dark');
         button.textContent = 'Светлая тема';
     } else {
-        body.classList.remove('dark');
-        body.classList.add('light');
+        body.classList.replace('dark', 'light');
         button.textContent = 'Тёмная тема';
     }
 }
 
+// Открытие вкладок
 function openTab(evt, tabName, groupName) {
     const tabContents = document.querySelectorAll(`.${groupName} .tab-content`);
     const tabButtons = document.querySelectorAll(`.${groupName} .tab-btn`);
-    for (let i = 0; i < tabContents.length; i++) tabContents[i].classList.remove('active');
-    for (let i = 0; i < tabButtons.length; i++) tabButtons[i].classList.remove('active');
+    tabContents.forEach(content => content.classList.remove('active'));
+    tabButtons.forEach(button => button.classList.remove('active'));
     document.getElementById(tabName).classList.add('active');
     evt.currentTarget.classList.add('active');
 }
 
-const ticker = document.getElementById('newsTicker');
-const tickerContent = document.getElementById('tickerContent');
-
+// Прокрутка новостей
 function scrollNews(distance) {
     const currentScroll = ticker.scrollLeft;
     const contentWidth = tickerContent.scrollWidth / 2;
     let targetScroll = currentScroll + distance;
-
-    if (targetScroll >= contentWidth) {
-        targetScroll -= contentWidth;
-    } else if (targetScroll < 0) {
-        targetScroll += contentWidth;
-    }
-
+    if (targetScroll >= contentWidth) targetScroll -= contentWidth;
+    else if (targetScroll < 0) targetScroll += contentWidth;
     ticker.scrollTo({ left: targetScroll, behavior: 'smooth' });
 }
 
+// Обработка кликов по новостям
 tickerContent.addEventListener('click', (e) => {
     const link = e.target.closest('a');
     if (link) window.open(link.href, '_blank');
 });
 
+// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3'];
-    groups.forEach(group => {
-        const firstTabButton = document.querySelector(`.${group} .tab-btn`);
-        if (firstTabButton) firstTabButton.click();
-    });
+    groups.forEach(group => document.querySelector(`.${group} .tab-btn`).click());
     loadNewsFromFirebase();
     auth.onAuthStateChanged(user => {
+        isAdminLoggedIn = !!user;
+        const adminPanel = document.getElementById('adminPanel');
+        const loginBtn = document.querySelector('.login-btn');
         if (user) {
-            isAdminLoggedIn = true;
-            document.getElementById('adminPanel').classList.add('active');
-            document.querySelector('.login-btn').style.display = 'none';
-            makeDraggableAndResizable(document.getElementById('adminPanel'));
+            adminPanel.classList.add('active');
+            loginBtn.style.display = 'none';
+            makeDraggableAndResizable(adminPanel);
             updateNewsList();
         } else {
-            isAdminLoggedIn = false;
-            document.getElementById('adminPanel').classList.remove('active');
-            document.querySelector('.login-btn').style.display = 'block';
+            adminPanel.classList.remove('active');
+            loginBtn.style.display = 'block';
         }
     });
     showWelcomePopupForNewUsers();
 });
 
+// Показ попапа для новых пользователей
 function showWelcomePopupForNewUsers() {
-    const hasVisited = document.cookie.includes('hasVisited=true');
-    if (!hasVisited) {
+    if (!document.cookie.includes('hasVisited=true')) {
         document.getElementById('welcomePopup').classList.add('active');
         document.getElementById('popupOverlay').classList.add('active');
         document.body.classList.add('popup-active');
@@ -138,91 +138,72 @@ function showWelcomePopupForNewUsers() {
     }
 }
 
+// Закрытие попапа с обновлениями
 function closeWelcomePopup() {
     document.getElementById('welcomePopup').classList.remove('active');
     document.getElementById('popupOverlay').classList.remove('active');
     document.body.classList.remove('popup-active');
 }
 
+// Показ формы логина
 function showLoginForm() {
     document.getElementById('loginForm').classList.add('active');
     document.getElementById('popupOverlay').classList.add('active');
     document.body.classList.add('popup-active');
 }
 
+// Закрытие формы логина
 function closeLoginForm() {
     document.getElementById('loginForm').classList.remove('active');
     document.getElementById('popupOverlay').classList.remove('active');
     document.body.classList.remove('popup-active');
 }
 
+// Логин администратора
 function login() {
     const email = document.getElementById('loginInput').value.trim();
     const password = document.getElementById('passwordInput').value.trim();
     const rememberMe = document.getElementById('rememberMe').checked;
 
-    if (!email || !password) {
-        alert('Пожалуйста, введите email и пароль!');
-        return;
-    }
+    if (!email || !password) return alert('Пожалуйста, введите email и пароль!');
 
     auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-            if (rememberMe) {
-                auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-            } else {
-                auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-            }
-            document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('popupOverlay').classList.remove('active');
-            document.body.classList.remove('popup-active');
+            auth.setPersistence(rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+            closeLoginForm();
         })
         .catch(error => {
             let errorMessage = 'Ошибка входа: ';
             switch (error.code) {
-                case 'auth/invalid-email':
-                    errorMessage += 'Неверный формат email.';
-                    break;
-                case 'auth/user-not-found':
-                    errorMessage += 'Пользователь не найден.';
-                    break;
-                case 'auth/wrong-password':
-                    errorMessage += 'Неверный пароль.';
-                    break;
-                case 'auth/invalid-credential':
-                    errorMessage += 'Неверные учетные данные.';
-                    break;
-                default:
-                    errorMessage += error.message;
+                case 'auth/invalid-email': errorMessage += 'Неверный формат email.'; break;
+                case 'auth/user-not-found': errorMessage += 'Пользователь не найден.'; break;
+                case 'auth/wrong-password': errorMessage += 'Неверный пароль.'; break;
+                case 'auth/invalid-credential': errorMessage += 'Неверные учетные данные.'; break;
+                default: errorMessage += error.message;
             }
             alert(errorMessage);
             console.error('Ошибка входа:', error);
         });
 }
 
+// Добавление новости
 function addNews() {
-    if (!isAdminLoggedIn) {
-        alert('Войдите в админ-панель для редактирования!');
-        return;
-    }
+    if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
     const newsText = document.getElementById('newsText').value.trim();
     const newsLink = document.getElementById('newsLink').value.trim();
-    if (newsText && newsLink) {
-        const newNews = { text: newsText, link: newsLink };
-        newsRef.push(newNews);
-        document.getElementById('newsText').value = '';
-        document.getElementById('newsLink').value = '';
-    } else {
-        alert('Введите текст новости и ссылку!');
-    }
+    if (!newsText || !newsLink) return alert('Введите текст новости и ссылку!');
+    newsRef.push({ text: newsText, link: newsLink });
+    document.getElementById('newsText').value = '';
+    document.getElementById('newsLink').value = '';
 }
 
+// Обновление содержимого тикера
 function updateTickerContent() {
-    const currentContent = tickerContent.innerHTML;
-    tickerContent.innerHTML = currentContent + currentContent;
+    tickerContent.innerHTML += tickerContent.innerHTML; // Дублируем контент для бесконечной прокрутки
     ticker.scrollLeft = 0;
 }
 
+// Обновление списка новостей в админ-панели
 function updateNewsList() {
     const newsList = document.getElementById('newsList');
     newsList.innerHTML = '';
@@ -234,46 +215,33 @@ function updateNewsList() {
     });
 }
 
+// Удаление новости
 function deleteNews() {
-    if (!isAdminLoggedIn) {
-        alert('Войдите в админ-панель для редактирования!');
-        return;
-    }
+    if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
     const newsList = document.getElementById('newsList');
     const selectedIndex = newsList.selectedIndex;
-    if (selectedIndex === -1) {
-        alert('Выберите новость для удаления!');
-        return;
-    }
-    const itemToRemove = newsItems[selectedIndex];
-    const itemId = itemToRemove.dataset.id;
+    if (selectedIndex === -1) return alert('Выберите новость для удаления!');
+    const itemId = newsItems[selectedIndex].dataset.id;
     newsRef.child(itemId).remove();
 }
 
+// Сделать элемент перетаскиваемым и изменяемым по размеру
 function makeDraggableAndResizable(element) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    element.querySelector('h3').onmousedown = dragMouseDown;
-
-    function dragMouseDown(e) {
+    const header = element.querySelector('h3');
+    header.onmousedown = (e) => {
         e.preventDefault();
         pos3 = e.clientX;
         pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        element.style.top = (element.offsetTop - pos2) + "px";
-        element.style.left = (element.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
+        document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+        document.onmousemove = (e) => {
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+        };
+    };
 }
