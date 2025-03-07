@@ -104,6 +104,7 @@
             text-align: center;
             position: relative;
             z-index: 1;
+            height: 80px; /* Фиксированная высота для расчёта отступа */
         }
         header h1 {
             font-size: 2.5em;
@@ -161,12 +162,12 @@
         .card {
             transition: transform 0.3s ease;
             width: 100%;
-            height: 500px;
+            min-height: 200px; /* Минимальная высота */
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
             padding: 30px;
             margin-bottom: 20px;
+            overflow-y: auto; /* Скроллинг только при переполнении */
         }
         .card:hover { transform: translateY(-5px); }
         .card h2 { margin-bottom: 20px; font-size: 2em; }
@@ -199,8 +200,7 @@
         .tabs { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
         .tab-btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
         .tab-btn.active { font-weight: bold; }
-        .tab-close-btn { padding: 5px 10px; margin-left: 10px; }
-        .tab-content-wrapper { flex-grow: 1; overflow-y: auto; }
+        .tab-content-wrapper { flex-grow: 1; }
         .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; }
         .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
@@ -216,7 +216,7 @@
             cursor: pointer;
             z-index: 10;
             transition: background 0.3s, transform 0.2s, border-color 0.3s;
-            display: none; /* Опционально скрыто */
+            display: none; /* Скрыто по умолчанию */
         }
         .arrow:hover { transform: translateY(-50%) scale(1.1); }
         .arrow-left { left: 5px; }
@@ -266,9 +266,9 @@
 
         .sidebar {
             position: fixed;
-            top: 150px;
+            top: 80px; /* Высота header */
             width: 350px;
-            height: calc(100vh - 150px);
+            height: calc(100vh - 80px); /* Полная высота минус header */
             padding: 25px;
             border-radius: 10px;
             z-index: 2;
@@ -368,14 +368,14 @@
             .news h2, .card h2 { font-size: 1.5em; }
             .news-ticker a { font-size: 1.2em; width: 200px; }
             .news { min-height: 80px; padding: 15px 50px; }
-            .card { height: 400px; padding: 20px; }
+            .card { padding: 20px; }
             .card h2 { font-size: 1.8em; }
             .card h3 { font-size: 1.4em; }
             .tab-btn { padding: 8px 15px; margin-right: 5px; }
             .tabs { flex-wrap: wrap; }
             .theme-toggle { top: 10px; right: 10px; }
             .login-btn { top: 10px; right: 170px; }
-            .sidebar { top: 120px; height: calc(100vh - 120px); }
+            .sidebar { top: 80px; height: calc(100vh - 80px); }
             .sidebar-toggle { padding: 10px; }
         }
     </style>
@@ -433,7 +433,7 @@
         <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
         <div class="news-ticker" id="newsTicker">
             <div class="ticker-content" id="tickerContent">
-                <!-- Новости загружаются из Firebase -->
+                <!-- Новости загружаются локально -->
             </div>
         </div>
         <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
@@ -443,7 +443,6 @@
         <div class="card tab-group-1">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О лицее</button>
-                <button class="tab-close-btn" onclick="closeTabs('tab-group-1')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="about1" class="tab-content active">
@@ -452,7 +451,6 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'about-content', 'tab-group-1')">О нас</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'history-content', 'tab-group-1')">История</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'education-content', 'tab-group-1')">Образовательные услуги</button>
-                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-1')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="about-content" class="tab-content active">
@@ -484,7 +482,6 @@
         <div class="card tab-group-2">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'organization2', 'tab-group-2')">Организация обучения</button>
-                <button class="tab-close-btn" onclick="closeTabs('tab-group-2')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="organization2" class="tab-content active">
@@ -493,7 +490,6 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'schedule-content', 'tab-group-2')">Расписание</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'admission-content', 'tab-group-2')">Приём</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'support-content', 'tab-group-2')">Поддержка учащихся</button>
-                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-2')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="schedule-content" class="tab-content active">
@@ -520,7 +516,6 @@
         <div class="card tab-group-3">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты и документы</button>
-                <button class="tab-close-btn" onclick="closeTabs('tab-group-3')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="contacts3" class="tab-content active">
@@ -529,7 +524,6 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'contacts-content', 'tab-group-3')">Контакты</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'hotline-content', 'tab-group-3')">Горячая линия</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'documents-content', 'tab-group-3')">Документы</button>
-                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-3')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="contacts-content" class="tab-content active">
@@ -560,7 +554,6 @@
         <div class="card tab-group-4">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'life4', 'tab-group-4')">Жизнь лицея</button>
-                <button class="tab-close-btn" onclick="closeTabs('tab-group-4')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="life4" class="tab-content active">
@@ -569,7 +562,6 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'achievements-content', 'tab-group-4')">Достижения</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'events-content', 'tab-group-4')">Мероприятия</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'parents-content', 'tab-group-4')">Родителям</button>
-                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-4')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="achievements-content" class="tab-content active">
@@ -597,7 +589,6 @@
         <div class="card tab-group-5">
             <div class="tabs">
                 <button class="tab-btn active" onclick="openTab(event, 'students5', 'tab-group-5')">Учащимся и партнёрам</button>
-                <button class="tab-close-btn" onclick="closeTabs('tab-group-5')">Закрыть</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="students5" class="tab-content active">
@@ -606,7 +597,6 @@
                         <button class="tab-btn active" onclick="openInnerTab(event, 'students-content', 'tab-group-5')">Ученикам</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'projects-content', 'tab-group-5')">Проекты</button>
                         <button class="tab-btn" onclick="openInnerTab(event, 'partners-content', 'tab-group-5')">Партнёры</button>
-                        <button class="tab-close-btn" onclick="closeInnerTabs('tab-group-5')">Закрыть</button>
                     </div>
                     <div class="tab-content-wrapper">
                         <div id="students-content" class="tab-content active">
@@ -660,9 +650,10 @@
     <div class="popup" id="welcomePopup">
         <h3>Обновления за 7 марта 2025</h3>
         <ul>
-            <li>Исправлена лента новостей</li>
-            <li>Добавлена возможность закрытия вкладок</li>
-            <li>Исправлены кнопки боковых панелей</li>
+            <li>Лента новостей теперь работает локально</li>
+            <li>Вкладки переключаются как раньше</li>
+            <li>Боковые панели начинаются от верха</li>
+            <li>Разделы адаптированы под контент</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
