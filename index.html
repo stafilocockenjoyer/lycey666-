@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Лицей №6 им. И.З.Шуклина — Будущее начинается здесь</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -31,9 +28,9 @@
         body.light header { background: linear-gradient(to right, #a3bffa, #b2f2bb); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
         body.light .card { background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border-radius: 10px; padding: 25px; }
         body.light .card h2 { color: #6b7280; }
-        body.light .news { background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border: 2px solid #a3bffa; border-radius: 10px; min-height: 100px; padding: 25px 60px; position: relative; }
+        body.light .news { background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border: 2px solid #a3bffa; border-radius: 10px; min-height: 100px; padding: 25px 60px; }
         body.light .news h2 { color: #6b7280; }
-        body.light .news-ticker a { color: #4a5e6e; background: rgba(163, 191, 250, 0.2); padding: 15px 20px; border-radius: 15px; margin-right: 15px; text-decoration: none; transition: color 0.3s, background 0.3s; display: inline-block; width: 300px; white-space: normal; font-size: 1.4em; }
+        body.light .news-ticker a { color: #4a5e6e; background: rgba(163, 191, 250, 0.2); padding: 15px 20px; border-radius: 15px; margin-right: 15px; text-decoration: none; transition: color 0.3s, background 0.3s; width: 300px; white-space: normal; font-size: 1.4em; }
         body.light .news-ticker a:hover { color: #fff; background: #a3bffa; }
         body.light .card p, body.light .card ul { color: #5a6a7a; }
         body.light .highlight { background: #d1e7dd; color: #4a5e6e; font-weight: bold; padding: 8px; border-radius: 5px; }
@@ -46,17 +43,27 @@
         body.light .arrow:hover { background: linear-gradient(45deg, #b2f2bb, #a3bffa); border-color: #4a5e6e; }
         body.light .sidebar { background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         body.light .sidebar-toggle { background: #a3bffa; color: #fff; }
-        body.light .accordion-btn { background: #e0e7ff; color: #4a5e6e; }
-        body.light .accordion-content { background: rgba(255, 255, 255, 0.8); }
 
-        body.dark { background: none; color: #e0e0e0; }
-        body.dark:before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%); z-index: -1; }
+        body.dark {
+            background: none;
+            color: #e0e0e0;
+        }
+        body.dark:before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(225deg, #0f0f0f 0%, #1f1f1f 50%, #383838 100%);
+            z-index: -1;
+        }
         body.dark header { background: transparent; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
         body.dark .card { background: #2a2a2a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 25px; }
         body.dark .card h2 { color: #cccccc; }
-        body.dark .news { background: #333333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); border: 2px solid #404040; border-radius: 10px; min-height: 100px; padding: 25px 60px; position: relative; }
+        body.dark .news { background: #333333; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); border: 2px solid #404040; border-radius: 10px; min-height: 100px; padding: 25px 60px; }
         body.dark .news h2 { color: #cccccc; }
-        body.dark .news-ticker a { color: #e0e0e0; background: #404040; padding: 15px 20px; border-radius: 15px; margin-right: 15px; text-decoration: none; transition: color 0.3s, background 0.3s; display: inline-block; width: 300px; white-space: normal; font-size: 1.4em; }
+        body.dark .news-ticker a { color: #e0e0e0; background: #404040; padding: 15px 20px; border-radius: 15px; margin-right: 15px; text-decoration: none; transition: color 0.3s, background 0.3s; width: 300px; white-space: normal; font-size: 1.4em; }
         body.dark .news-ticker a:hover { color: #ffffff; background: #4d4d4d; }
         body.dark .card p, body.dark .card ul { color: #e0e0e0; }
         body.dark .highlight { background: #4d4d4d; color: #ffffff; font-weight: bold; padding: 8px; border-radius: 5px; }
@@ -69,24 +76,17 @@
         body.dark .arrow:hover { background: linear-gradient(45deg, #4d4d4d, #383838); border-color: #666666; }
         body.dark .sidebar { background: #2a2a2a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
         body.dark .sidebar-toggle { background: #404040; color: #ffffff; }
-        body.dark .accordion-btn { background: #404040; color: #e0e0e0; }
-        body.dark .accordion-content { background: #333333; }
 
         header {
             padding: 40px;
             text-align: center;
             position: relative;
             z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
         }
         header h1 {
             font-size: 2.5em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin: 0 20px;
         }
 
         .news {
@@ -109,7 +109,7 @@
             flex-grow: 1;
             display: flex;
             align-items: flex-start;
-            min-height: 100px; /* Убедимся, что поле не пустое */
+            min-height: 100px;
         }
         .ticker-content {
             display: inline-flex;
@@ -118,7 +118,7 @@
         }
         @keyframes ticker-scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            100% { transform: translateX(-200%); }
         }
         .news-ticker:hover .ticker-content { animation-play-state: paused; }
         .news-ticker:empty::after {
@@ -152,10 +152,6 @@
         .card p.important { font-size: 1.3em; font-weight: bold; }
         .card ul { font-size: 1.1em; margin-bottom: 15px; }
         .card ul li.important { font-size: 1.3em; font-weight: bold; }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
 
         ul {
             list-style: none;
@@ -215,17 +211,12 @@
             transition: background 0.3s;
             z-index: 1002;
         }
-        .theme-toggle:hover {
-            background: #4d4d4d;
-        }
+        .theme-toggle:hover { background: #4d4d4d; }
         body.light .theme-toggle {
             background: linear-gradient(to right, #a3bffa, #b2f2bb);
             color: #4a5e6e;
         }
-        body.light .theme-toggle:hover {
-            background: linear-gradient(to right, #b2f2bb, #a3bffa);
-            color: #4a5e6e;
-        }
+        body.light .theme-toggle:hover { background: linear-gradient(to right, #b2f2bb, #a3bffa); }
 
         .login-btn {
             position: fixed;
@@ -241,103 +232,12 @@
             transition: background 0.3s;
             z-index: 1002;
         }
-        .login-btn:hover {
-            background: linear-gradient(to right, #666666, #777777);
-        }
+        .login-btn:hover { background: linear-gradient(to right, #666666, #777777); }
         body.light .login-btn {
             background: linear-gradient(to right, #a3bffa, #b2f2bb);
             color: #4a5e6e;
         }
-        body.light .login-btn:hover {
-            background: linear-gradient(to right, #b2f2bb, #a3bffa);
-            color: #4a5e6e;
-        }
-
-        .admin-panel {
-            display: none;
-            position: absolute;
-            top: 100px;
-            left: 20px;
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1003;
-            width: 300px;
-            height: auto;
-            min-width: 200px;
-            min-height: 200px;
-            resize: both;
-            overflow: auto;
-            cursor: move;
-        }
-        .admin-panel.active { display: block; }
-        .admin-panel h3 { color: #cccccc; margin-bottom: 15px; font-size: 1.3em; cursor: grab; }
-        .admin-panel input, .admin-panel textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #555555; border-radius: 5px; background: #333333; color: #e0e0e0; font-size: 0.9em; }
-        .admin-panel textarea { height: 80px; resize: vertical; }
-        .admin-panel button { width: 100%; padding: 10px; border: none; border-radius: 5px; background: #404040; color: #fff; cursor: pointer; transition: background 0.3s; font-size: 0.9em; margin-bottom: 10px; }
-        .admin-panel button:hover { background: #4d4d4d; }
-        .admin-panel select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #555555; border-radius: 5px; background: #333333; color: #e0e0e0; font-size: 0.9em; }
-
-        .login-form {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2a2a2a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1003;
-            display: none;
-            text-align: center;
-        }
-        .login-form.active { display: block; }
-        .login-form input[type="text"], .login-form input[type="password"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #555555; border-radius: 5px; background: #333333; color: #e0e0e0; }
-        .login-form button { padding: 10px 20px; border: none; border-radius: 5px; background: #404040; color: #fff; cursor: pointer; transition: background 0.3s; margin-right: 10px; }
-        .login-form button:hover { background: #4d4d4d; }
-        .login-form label { color: #e0e0e0; font-size: 0.9em; margin-right: 5px; }
-        .login-form input[type="checkbox"] { vertical-align: middle; }
-
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #2a2a2a;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-            width: 50%;
-            max-width: 600px;
-            max-height: 90%;
-            text-align: center;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            overflow-y: auto;
-        }
-        .popup.active { display: block; opacity: 1; }
-        .popup h3 { margin-bottom: 25px; color: #cccccc; font-size: 2em; }
-        .popup ul { list-style: none; padding: 0; margin-bottom: 20px; }
-        .popup li { margin-bottom: 20px; color: #e0e0e0; font-size: 1.3em; }
-        .popup button { padding: 12px 25px; border: none; border-radius: 5px; background: #404040; color: #fff; cursor: pointer; transition: background 0.3s; }
-        .popup button:hover { background: #4d4d4d; }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            display: none;
-        }
-        .overlay.active { display: block; }
-
-        body.popup-active .news-ticker a, body.popup-active .tab-btn { pointer-events: none; opacity: 0.5; cursor: not-allowed; }
+        body.light .login-btn:hover { background: linear-gradient(to right, #b2f2bb, #a3bffa); }
 
         .sidebar {
             position: fixed;
@@ -369,31 +269,19 @@
         .question-form button:hover { background: #4d4d4d; }
 
         .sidebar-toggle {
-            padding: 10px 15px;
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 3;
             transition: background 0.3s;
-            margin: 0 10px;
         }
+        .sidebar-toggle-left { left: 10px; }
+        .sidebar-toggle-right { right: 10px; }
         .sidebar-toggle:hover { opacity: 0.9; }
-
-        .accordion-btn {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: left;
-            transition: background 0.3s;
-            margin-bottom: 5px;
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .accordion-content.active { display: block; }
 
         @media (max-width: 1200px) {
             .sidebar { width: 300px; }
@@ -415,15 +303,8 @@
             .tabs { flex-wrap: wrap; }
             .theme-toggle { top: 10px; right: 10px; }
             .login-btn { top: 10px; right: 170px; }
-            .admin-panel { top: 60px; left: 10px; width: 90%; }
-            .login-form { width: 90%; }
-            .popup { width: 90%; padding: 20px; }
-            .popup h3 { font-size: 1.5em; }
-            .popup li { font-size: 1em; }
-            .arrow { width: 40px; height: 40px; font-size: 20px; }
             .sidebar { top: 120px; height: calc(100vh - 120px); }
-            header { padding: 20px; }
-            .sidebar-toggle { margin: 0 5px; }
+            .sidebar-toggle { padding: 10px; }
         }
     </style>
 </head>
@@ -434,28 +315,29 @@
 
     <header>
         <h1>МБОУ "Лицей №6 им. И.З.Шуклина г. Горно-Алтайска"</h1>
-        <button class="sidebar-toggle sidebar-toggle-left" onclick="toggleSidebar('sidebar-left')"><i class="fas fa-calendar-alt"></i></button>
-        <button class="sidebar-toggle sidebar-toggle-right" onclick="toggleSidebar('sidebar-right')"><i class="fas fa-info-circle"></i></button>
     </header>
+
+    <button class="sidebar-toggle sidebar-toggle-left" onclick="toggleSidebar('sidebar-left')"><i class="fas fa-calendar-alt"></i></button>
+    <button class="sidebar-toggle sidebar-toggle-right" onclick="toggleSidebar('sidebar-right')"><i class="fas fa-info-circle"></i></button>
 
     <div class="sidebar sidebar-left" id="sidebar-left">
         <h3><i class="fas fa-calendar-alt calendar-icon"></i> Календарь мероприятий</h3>
         <div class="calendar">
             <ul>
-                <li class="important"><i class="fas fa-star"></i> <strong>10 марта:</strong> Олимпиада по математике</li>
-                <li><strong>15 марта:</strong> День открытых дверей</li>
-                <li><strong>20 марта:</strong> Конкурс "Ученик года"</li>
-                <li><strong>25 марта:</strong> <a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></li>
-                <li><strong>30 марта:</strong> Выставка проектов</li>
+                <li class="important"><i class="fas fa-star"></i> <strong>10 марта 2025:</strong> Олимпиада по математике</li>
+                <li><strong>15 марта 2025:</strong> День открытых дверей</li>
+                <li><strong>20 марта 2025:</strong> Конкурс "Ученик года"</li>
+                <li><strong>25 марта 2025:</strong> <a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></li>
+                <li><strong>30 марта 2025:</strong> Выставка проектов</li>
             </ul>
         </div>
         <div class="weather">
             <h3><i class="fas fa-snowflake weather-icon"></i> Погода в Горно-Алтайске</h3>
-            <p class="important"><i class="fas fa-temperature-high"></i> Сегодня, 7 марта 2025:</p>
+            <p class="important"><i class="fas fa-temperature-high"></i> 7 марта 2025, 12:04 AM PST:</p>
             <p><strong>Температура:</strong> 0°C до +3°C</p>
             <p><strong>Осадки:</strong> Лёгкий снег</p>
             <p><strong>Ветер:</strong> 2-4 м/с</p>
-            <p><a href="https://www.gismeteo.ru/weather/gorno-altaysk-11308/">Подробный прогноз</a> | <a href="https://yandex.ru/pogoda/gorno-altaysk">Альтернатива</a></p>
+            <p><a href="https://www.gismeteo.ru/weather/gorno-altaysk-11308/">Gismeteo</a> | <a href="https://yandex.ru/pogoda/gorno-altaysk">Yandex.Погода</a></p>
         </div>
     </div>
 
@@ -479,12 +361,14 @@
         <button class="arrow arrow-left" onclick="scrollNews(-300)">‹</button>
         <div class="news-ticker" id="newsTicker">
             <div class="ticker-content" id="tickerContent">
-                <h3><a href="http://www.lyceum-6.edusite.ru/p1aa1.html">Начало Всероссийской олимпиады</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/p1aa1.html">Начало Всероссийской олимпиады 2025</a></h3>
                 <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Победа в "Учитель года 2025"</a></h3>
-                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></h3>
-                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Выставка проектов</a></h3>
-                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Подготовка к экзаменам</a></h3>
-                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Итоги недели</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья 25 марта</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Выставка проектов 30 марта</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Обновление кабинета алтайского языка 28.11.2024</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Мемориальные доски 3.12.2024</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/p1aa1.html">Начало Всероссийской олимпиады 2025</a></h3>
+                <h3><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">Победа в "Учитель года 2025"</a></h3>
             </div>
         </div>
         <button class="arrow arrow-right" onclick="scrollNews(300)">›</button>
@@ -493,193 +377,182 @@
     <div class="container">
         <div class="card tab-group-1">
             <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О нас</button>
-                <button class="tab-btn" onclick="openTab(event, 'admission1', 'tab-group-1')">Информация о приёме</button>
-                <button class="tab-btn" onclick="openTab(event, 'education1', 'tab-group-1')">Образовательные услуги</button>
+                <button class="tab-btn active" onclick="openTab(event, 'about1', 'tab-group-1')">О лицее</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="about1" class="tab-content active">
-                    <h2>О нас</h2>
-                    <p class="important"><i class="fas fa-school"></i> Лицей №6 — ведущее учреждение Горно-Алтайска</p>
-                    <h3>Основные сведения</h3>
-                    <p>Расположен по адресу: пр. Коммунистический, 63, г. Горно-Алтайск, Республика Алтай. Обучается 1400 учащихся, работают 90 педагогов. Углублённое изучение математики и естественных наук.</p>
-                    <h3>История</h3>
-                    <p>Основан в 1970 году, статус лицея присвоен в 1995 году в честь И.З. Шуклина.</p>
-                    <button class="accordion-btn" onclick="toggleAccordion(this)">Состав педагогов</button>
-                    <div class="accordion-content">
-                        <ul>
-                            <li class="important">Зырянова Г.И. — директор</li>
-                            <li>Иванова Е.А. — учитель физики</li>
-                            <li>Петров В.С. — учитель математики</li>
-                            <li><a href="http://www.lyceum-6.edusite.ru/sveden/employees">Полный список</a></li>
-                        </ul>
+                    <h2>О лицее</h2>
+                    <div class="tabs inner-tabs">
+                        <button class="tab-btn active" onclick="openInnerTab(event, 'about-content', 'tab-group-1')">О нас</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'history-content', 'tab-group-1')">История</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'education-content', 'tab-group-1')">Образовательные услуги</button>
                     </div>
-                </div>
-                <div id="admission1" class="tab-content">
-                    <h2>Информация о приёме</h2>
-                    <p class="important"><i class="fas fa-user-plus"></i> Приём: 1 апреля — 30 июня (1 класс)</p>
-                    <h3>Документы</h3>
-                    <ul>
-                        <li class="important">Заявление, свидетельство о рождении, медкарта</li>
-                        <li><a href="http://www.lyceum-6.edusite.ru/p13aa1.html">Бланки</a></li>
-                    </ul>
-                    <h3>Тестирование</h3>
-                    <p>Математика, русский язык.</p>
-                </div>
-                <div id="education1" class="tab-content">
-                    <h2>Образовательные услуги</h2>
-                    <p class="important"><i class="fas fa-book"></i> Программы по ФГОС с углублением</p>
-                    <h3>Предметы</h3>
-                    <ul>
-                        <li class="important">Математика</li>
-                        <li>Физика</li>
-                        <li>Биология</li>
-                    </ul>
-                    <h3>Кружки</h3>
-                    <p>Робототехника, шахматы.</p>
-                    <p><a href="http://www.lyceum-6.edusite.ru/p4aa1.html">Подробности</a></p>
+                    <div class="tab-content-wrapper">
+                        <div id="about-content" class="tab-content active">
+                            <h3>О нас</h3>
+                            <p class="important"><i class="fas fa-school"></i> Лицей №6 — одно из ведущих образовательных учреждений Горно-Алтайска.</p>
+                            <p>Расположен по адресу: пр. Коммунистический, 63, г. Горно-Алтайск, Республика Алтай. В лицее обучается около 1400 учащихся, работают 90 педагогов, включая высококвалифицированных специалистов. Лицей фокусируется на углублённом изучении математики, естественных наук и алтайского языка.</p>
+                            <p>Руководитель: Зырянова Галина Ивановна. Телефон: 8(38822)2-52-17. Эл. почта: lyceum-6@mail.ru.</p>
+                            <p>Материально-техническое обеспечение включает современные кабинеты, компьютерные классы, Центр "Точка роста" и доступную среду для учащихся с ограниченными возможностями.</p>
+                        </div>
+                        <div id="history-content" class="tab-content">
+                            <h3>История</h3>
+                            <p class="important"><i class="fas fa-landmark"></i> Лицей основан в 1938 году как школа №6.</p>
+                            <p>В 1941 году здесь учился Илья Захарович Шуклин, Герой Советского Союза, погибший в Великой Отечественной войне. В 1995 году школе присвоен статус лицея и имя И.З. Шуклина. В 2018 году отмечалось 80-летие учреждения. В 2024 году открыты мемориальные доски в честь выпускников, погибших в спецоперации (3 декабря).</p>
+                            <p>Лицей гордится своей традицией подготовки одарённых детей и сотрудничества с Горно-Алтайским государственным университетом.</p>
+                        </div>
+                        <div id="education-content" class="tab-content">
+                            <h3>Образовательные услуги</h3>
+                            <p class="important"><i class="fas fa-book"></i> Лицей предлагает программы по ФГОС с углублением.</p>
+                            <p>Основные предметы: математика, физика, биология, алтайский язык и литература. Доступны кружки: робототехника, шахматы, моделирование. Центр "Точка роста" проводит уроки виртуальной реальности и семинары с участием студентов ГАГУ (октябрь-декабрь ежегодно).</p>
+                            <p>Питание: 70 руб./день. Платные услуги: дополнительные занятия по выбору (информатика, языки).</p>
+                            <p>Тестирование при приёме: математика, русский язык (апрель-июнь).</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card tab-group-2">
             <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'schedule2', 'tab-group-2')">Расписание</button>
-                <button class="tab-btn" onclick="openTab(event, 'founder2', 'tab-group-2')">Учредитель</button>
-                <button class="tab-btn" onclick="openTab(event, 'support2', 'tab-group-2')">Поддержка учащихся</button>
+                <button class="tab-btn active" onclick="openTab(event, 'organization2', 'tab-group-2')">Организация обучения</button>
             </div>
             <div class="tab-content-wrapper">
-                <div id="schedule2" class="tab-content active">
-                    <h2>Расписание</h2>
-                    <p class="important"><i class="fas fa-clock"></i> 6-дневная неделя, две смены:</p>
-                    <h3>Смены</h3>
-                    <ul>
-                        <li class="important">1 смена: 8:00 - 13:05</li>
-                        <li class="important">2 смена: 14:00 - 19:05</li>
-                    </ul>
-                    <h3>Звонки</h3>
-                    <p>1 урок: 8:00 - 8:45</p>
-                    <p><a href="http://www.lyceum-6.edusite.ru/p14aa1.html">Полное расписание</a></p>
-                </div>
-                <div id="founder2" class="tab-content">
-                    <h2>Учредитель</h2>
-                    <p class="important"><i class="fas fa-building"></i> Администрация г. Горно-Алтайска</p>
-                    <h3>Контакты</h3>
-                    <ul>
-                        <li>Адрес: пр. Коммунистический, 18</li>
-                        <li>Тел: <a href="tel:+73882224153">(38822) 2-41-53</a></li>
-                        <li><a href="http://www.gornoaltaysk.ru">Сайт</a></li>
-                    </ul>
-                </div>
-                <div id="support2" class="tab-content">
-                    <h2>Поддержка учащихся</h2>
-                    <p class="important"><i class="fas fa-headset"></i> Телефон доверия: <a href="tel:+88002000122">8-800-2000-122</a></p>
-                    <h3>Психолог</h3>
-                    <p>Каб. 305, 14:00-16:00</p>
+                <div id="organization2" class="tab-content active">
+                    <h2>Организация обучения</h2>
+                    <div class="tabs inner-tabs">
+                        <button class="tab-btn active" onclick="openInnerTab(event, 'schedule-content', 'tab-group-2')">Расписание</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'admission-content', 'tab-group-2')">Приём</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'support-content', 'tab-group-2')">Поддержка учащихся</button>
+                    </div>
+                    <div class="tab-content-wrapper">
+                        <div id="schedule-content" class="tab-content active">
+                            <h3>Расписание</h3>
+                            <p class="important"><i class="fas fa-clock"></i> 6-дневная неделя, две смены.</p>
+                            <p>1 смена: 8:00 - 13:05 (уроки по 45 минут, перемена 10-15 минут).</p>
+                            <p>2 смена: 14:00 - 19:05. Полное расписание: <a href="http://www.lyceum-6.edusite.ru/p14aa1.html">ссылка</a>.</p>
+                        </div>
+                        <div id="admission-content" class="tab-content">
+                            <h3>Приём</h3>
+                            <p class="important"><i class="fas fa-user-plus"></i> Приём: 1 апреля - 30 июня (1 класс).</p>
+                            <p>Документы: заявление, свидетельство о рождении, медкарта. Бланки: <a href="http://www.lyceum-6.edusite.ru/p13aa1.html">ссылка</a>.</p>
+                        </div>
+                        <div id="support-content" class="tab-content">
+                            <h3>Поддержка учащихся</h3>
+                            <p class="important"><i class="fas fa-headset"></i> Телефон доверия: 8-800-2000-122.</p>
+                            <p>Психолог: каб. 305, 14:00-16:00. Доступна помощь для детей с ОВЗ.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card tab-group-3">
             <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты</button>
-                <button class="tab-btn" onclick="openTab(event, 'hotline3', 'tab-group-3')">Горячая линия</button>
-                <button class="tab-btn" onclick="openTab(event, 'documents3', 'tab-group-3')">Документы</button>
+                <button class="tab-btn active" onclick="openTab(event, 'contacts3', 'tab-group-3')">Контакты и документы</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="contacts3" class="tab-content active">
-                    <h2>Контакты</h2>
-                    <p class="important"><i class="fas fa-map-marker-alt"></i> Адрес: пр. Коммунистический, 63, г. Горно-Алтайск, Республика Алтай</p>
-                    <h3>Телефоны</h3>
-                    <ul>
-                        <li class="important"><i class="fas fa-phone"></i> Директор: <a href="tel:+73882225217">8(388)22-2-52-17</a></li>
-                        <li>Методкабинет: <a href="tel:+73882225048">8(388)22-2-50-48</a></li>
-                    </ul>
-                    <p><a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a></p>
-                </div>
-                <div id="hotline3" class="tab-content">
-                    <h2>Горячая линия</h2>
-                    <p class="important"><i class="fas fa-exclamation-circle"></i> По сборам:</p>
-                    <ul>
-                        <li><a href="tel:+73882222989">8(38822)-2-29-89</a></li>
-                        <li><a href="tel:+73882222265">8(388)22-2-22-65</a></li>
-                    </ul>
-                </div>
-                <div id="documents3" class="tab-content">
-                    <h2>Документы</h2>
-                    <ul>
-                        <li class="important"><i class="fas fa-file-alt"></i> <a href="http://www.lyceum-6.edusite.ru/DswMedia/ustav.pdf">Устав</a></li>
-                        <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/licenziya.pdf">Лицензия</a></li>
-                        <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила</a></li>
-                    </ul>
+                    <h2>Контакты и документы</h2>
+                    <div class="tabs inner-tabs">
+                        <button class="tab-btn active" onclick="openInnerTab(event, 'contacts-content', 'tab-group-3')">Контакты</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'hotline-content', 'tab-group-3')">Горячая линия</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'documents-content', 'tab-group-3')">Документы</button>
+                    </div>
+                    <div class="tab-content-wrapper">
+                        <div id="contacts-content" class="tab-content active">
+                            <h3>Контакты</h3>
+                            <p class="important"><i class="fas fa-map-marker-alt"></i> Адрес: пр. Коммунистический, 63, г. Горно-Алтайск.</p>
+                            <p>Телефон директора: <a href="tel:+73882225217">8(38822)2-52-17</a>.</p>
+                            <p>Методкабинет: <a href="tel:+73882225048">8(38822)2-50-48</a>.</p>
+                            <p>Эл. почта: <a href="mailto:lyceum-6@mail.ru">lyceum-6@mail.ru</a>.</p>
+                        </div>
+                        <div id="hotline-content" class="tab-content">
+                            <h3>Горячая линия</h3>
+                            <p class="important"><i class="fas fa-exclamation-circle"></i> По сборам:</p>
+                            <p><a href="tel:+73882222989">8(38822)2-29-89</a>, <a href="tel:+73882222265">8(38822)2-22-65</a>.</p>
+                        </div>
+                        <div id="documents-content" class="tab-content">
+                            <h3>Документы</h3>
+                            <ul>
+                                <li class="important"><i class="fas fa-file-alt"></i> <a href="http://www.lyceum-6.edusite.ru/DswMedia/ustav.pdf">Устав</a></li>
+                                <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/licenziya.pdf">Лицензия</a></li>
+                                <li><a href="http://www.lyceum-6.edusite.ru/DswMedia/pravila_vnutrennego_rasporyadka.pdf">Правила</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card tab-group-4">
             <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'achievements4', 'tab-group-4')">Достижения</button>
-                <button class="tab-btn" onclick="openTab(event, 'life4', 'tab-group-4')">Жизнь лицея</button>
-                <button class="tab-btn" onclick="openTab(event, 'parents4', 'tab-group-4')">Родителям</button>
+                <button class="tab-btn active" onclick="openTab(event, 'life4', 'tab-group-4')">Жизнь лицея</button>
             </div>
             <div class="tab-content-wrapper">
-                <div id="achievements4" class="tab-content active">
-                    <h2>Достижения</h2>
-                    <p class="important"><i class="fas fa-trophy"></i> Олимпиады:</p>
-                    <h3>Результаты</h3>
-                    <ul>
-                        <li class="important">2024: 5 победителей (математика)</li>
-                        <li>2023: 3 призёра (физика)</li>
-                    </ul>
-                </div>
-                <div id="life4" class="tab-content">
+                <div id="life4" class="tab-content active">
                     <h2>Жизнь лицея</h2>
-                    <p class="important"><i class="fas fa-calendar-day"></i> Мероприятия:</p>
-                    <ul>
-                        <li class="important">День знаний — 1 сентября</li>
-                        <li><a href="http://www.lyceum-6.edusite.ru/news/p11aa1.html">День здоровья</a></li>
-                    </ul>
-                </div>
-                <div id="parents4" class="tab-content">
-                    <h2>Родителям</h2>
-                    <p class="important"><i class="fas fa-utensils"></i> Питание: 70 руб./день</p>
-                    <h3>Собрания</h3>
-                    <p>10 сентября, 18:00</p>
-                    <p><a href="http://www.lyceum-6.edusite.ru">Официальный сайт</a></p>
+                    <div class="tabs inner-tabs">
+                        <button class="tab-btn active" onclick="openInnerTab(event, 'achievements-content', 'tab-group-4')">Достижения</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'events-content', 'tab-group-4')">Мероприятия</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'parents-content', 'tab-group-4')">Родителям</button>
+                    </div>
+                    <div class="tab-content-wrapper">
+                        <div id="achievements-content" class="tab-content active">
+                            <h3>Достижения</h3>
+                            <p class="important"><i class="fas fa-trophy"></i> Олимпиады и конкурсы.</p>
+                            <p>2024: 5 победителей по математике, 3 призёра по физике. Мария Ниговий — призёр психолого-педагогической олимпиады им. К.Д. Ушинского (5 декабря 2024).</p>
+                            <p>Команда (Яросвет Кривошеев, Артём Засядько, Анастасия Лукьянова, Валерия Тойдокова) заняла 1 место в игре по финансовой грамотности (дополнительные баллы для поступления в ГАГУ).</p>
+                        </div>
+                        <div id="events-content" class="tab-content">
+                            <h3>Мероприятия</h3>
+                            <p class="important"><i class="fas fa-calendar-day"></i> Календарь событий.</p>
+                            <p>День знаний: 1 сентября. День лицея: 19 октября (Интеллектуальная гостиная "Многообразие многогранников", 2023).</p>
+                            <p>28.11.2024: Открытие обновлённого кабинета алтайского языка с участием Амаду Ачапова и Натальи Герасимовой.</p>
+                        </div>
+                        <div id="parents-content" class="tab-content">
+                            <h3>Родителям</h3>
+                            <p class="important"><i class="fas fa-utensils"></i> Питание: 70 руб./день.</p>
+                            <p>Собрания: 10 сентября, 18:00. Родительский комитет: <a href="http://www.lyceum-6.edusite.ru/roditeli">ссылка</a>.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card tab-group-5">
             <div class="tabs">
-                <button class="tab-btn active" onclick="openTab(event, 'students5', 'tab-group-5')">Ученикам</button>
-                <button class="tab-btn" onclick="openTab(event, 'projects5', 'tab-group-5')">Проекты</button>
-                <button class="tab-btn" onclick="openTab(event, 'partners5', 'tab-group-5')">Партнёры</button>
+                <button class="tab-btn active" onclick="openTab(event, 'students5', 'tab-group-5')">Учащимся и партнёрам</button>
             </div>
             <div class="tab-content-wrapper">
                 <div id="students5" class="tab-content active">
-                    <h2>Ученикам</h2>
-                    <p class="important"><i class="fas fa-link"></i> Ресурсы:</p>
-                    <ul>
-                        <li class="important"><a href="https://uchi.ru">Учи.ру</a></li>
-                        <li><a href="https://resh.edu.ru">РЭШ</a></li>
-                    </ul>
-                    <h3>Кружки</h3>
-                    <p>Робототехника (Пн, 15:00)</p>
-                </div>
-                <div id="projects5" class="tab-content">
-                    <h2>Проекты</h2>
-                    <p class="important"><i class="fas fa-flask"></i> Научные работы:</p>
-                    <ul>
-                        <li class="important">"Экология Алтая" — 2024</li>
-                    </ul>
-                </div>
-                <div id="partners5" class="tab-content">
-                    <h2>Партнёры</h2>
-                    <p class="important"><i class="fas fa-handshake"></i> Сотрудничество:</p>
-                    <ul>
-                        <li class="important"><a href="https://www.gasu.ru">Горно-Алтайский университет</a></li>
-                    </ul>
+                    <h2>Учащимся и партнёрам</h2>
+                    <div class="tabs inner-tabs">
+                        <button class="tab-btn active" onclick="openInnerTab(event, 'students-content', 'tab-group-5')">Ученикам</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'projects-content', 'tab-group-5')">Проекты</button>
+                        <button class="tab-btn" onclick="openInnerTab(event, 'partners-content', 'tab-group-5')">Партнёры</button>
+                    </div>
+                    <div class="tab-content-wrapper">
+                        <div id="students-content" class="tab-content active">
+                            <h3>Ученикам</h3>
+                            <p class="important"><i class="fas fa-link"></i> Ресурсы:</p>
+                            <ul>
+                                <li class="important"><a href="https://uchi.ru">Учи.ру</a></li>
+                                <li><a href="https://resh.edu.ru">РЭШ</a></li>
+                            </ul>
+                            <p>Кружки: робототехника (понедельник, 15:00), шахматы (среда, 16:00).</p>
+                        </div>
+                        <div id="projects-content" class="tab-content">
+                            <h3>Проекты</h3>
+                            <p class="important"><i class="fas fa-flask"></i> Научные работы.</p>
+                            <p>"Экология Алтая" (2024), семинары Центра "Точка роста" (октябрь-декабрь).</p>
+                        </div>
+                        <div id="partners-content" class="tab-content">
+                            <h3>Партнёры</h3>
+                            <p class="important"><i class="fas fa-handshake"></i> Сотрудничество.</p>
+                            <p><a href="https://www.gasu.ru">Горно-Алтайский государственный университет</a> (семинары, поступление).</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -711,11 +584,11 @@
     <div class="popup" id="welcomePopup">
         <h3>Обновления за 7 марта 2025</h3>
         <ul>
-            <li>Добавлена информация о лицее</li>
-            <li>Иконки панелей перенесены в шапку</li>
-            <li>Исправлен Gismeteo</li>
-            <li>Обновлён состав педагогов</li>
+            <li>Изменено положение кнопок панелей</li>
             <li>Исправлена лента новостей</li>
+            <li>Заменён аккордеон на ссылку</li>
+            <li>Добавлено больше информации</li>
+            <li>Перестроена структура разделов</li>
         </ul>
         <button onclick="closeWelcomePopup()">Закрыть</button>
     </div>
@@ -723,11 +596,6 @@
     <script>
         function toggleSidebar(id) {
             document.getElementById(id).classList.toggle('active');
-        }
-
-        function toggleAccordion(button) {
-            const content = button.nextElementSibling;
-            content.classList.toggle('active');
         }
 
         function submitQuestion() {
@@ -751,6 +619,7 @@
                 document.getElementById('newsList').appendChild(option);
                 document.getElementById('newsText').value = '';
                 document.getElementById('newsLink').value = '';
+                updateNewsTicker();
             }
         }
 
@@ -758,9 +627,43 @@
             const select = document.getElementById('newsList');
             if (select.selectedIndex >= 0) {
                 select.remove(select.selectedIndex);
+                updateNewsTicker();
             }
         }
+
+        function updateNewsTicker() {
+            const select = document.getElementById('newsList');
+            const tickerContent = document.getElementById('tickerContent');
+            tickerContent.innerHTML = '';
+            for (let i = 0; i < select.options.length; i++) {
+                const option = select.options[i];
+                const link = document.createElement('h3');
+                link.innerHTML = `<a href="${option.value}">${option.text}</a>`;
+                tickerContent.appendChild(link);
+            }
+            // Дублируем контент для плавной анимации
+            tickerContent.innerHTML += tickerContent.innerHTML;
+        }
+
+        function openTab(event, tabId, group) {
+            const tabContents = document.querySelectorAll(`#${group} .tab-content`);
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            const tabButtons = document.querySelectorAll(`#${group} .tab-btn`);
+            tabButtons.forEach(button => button.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function openInnerTab(event, tabId, group) {
+            const tabContents = document.querySelectorAll(`#${group} .tab-content`);
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            const tabButtons = document.querySelectorAll(`#${group} .inner-tabs .tab-btn`);
+            tabButtons.forEach(button => button.classList.remove('active'));
+            event.target.classList.add('active');
+        }
     </script>
-    <script src="scripts.js"></script>
 </body>
 </html>
