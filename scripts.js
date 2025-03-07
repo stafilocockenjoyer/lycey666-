@@ -1,4 +1,4 @@
-// Конфигурация Firebase (нужна проверка)
+// Конфигурация Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAkoQTZ5pG6v_yjFvj_-HJagLQl3F0jZ80",
     authDomain: "lycey666.firebaseapp.com",
@@ -22,15 +22,6 @@ let newsItems = [];
 const ticker = document.getElementById('newsTicker');
 const tickerContent = document.getElementById('tickerContent');
 
-// Локальный массив новостей (основной источник)
-const localNews = [
-    { text: "Начало Всероссийской олимпиады 2025", link: "http://www.lyceum-6.edusite.ru/p1aa1.html" },
-    { text: "Победа в 'Учитель года 2025'", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
-    { text: "День здоровья 25 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
-    { text: "Выставка проектов 30 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
-    { text: "Обновление кабинета алтайского языка", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" }
-];
-
 // Список кликбейт-фраз для новостей
 const clickbaitPhrases = [
     " — читать далее...", " — фулл тут...", " — смотри бесплатно...",
@@ -41,12 +32,9 @@ const clickbaitPhrases = [
 // Функция для получения случайной кликбейт-фразы
 const getRandomClickbait = () => clickbaitPhrases[Math.floor(Math.random() * clickbaitPhrases.length)];
 
-// Загрузка новостей (локальная с попыткой Firebase)
-function loadNews() {
-    // Проверка подключения к Firebase
-    console.log('Проверка Firebase...');
-    newsRef.once('value', (snapshot) => {
-        console.log('Firebase подключён, данные:', snapshot.val());
+// Загрузка новостей из Firebase
+function loadNewsFromFirebase() {
+    newsRef.on('value', (snapshot) => {
         const data = snapshot.val();
         newsItems = [];
         tickerContent.innerHTML = '';
@@ -60,24 +48,18 @@ function loadNews() {
                 tickerContent.appendChild(h3);
             });
         } else {
-            console.log('Firebase пуст, использую локальные новости');
-            localNews.forEach(news => {
-                const h3 = document.createElement('h3');
-                h3.innerHTML = `<a href="${news.link}" target="_blank">${news.text}${getRandomClickbait()}</a>`;
-                tickerContent.appendChild(h3);
-            });
+            console.log('База данных пуста, добавляю начальные новости');
+            const initialNews = [
+                { text: "Начало Всероссийской олимпиады 2025", link: "http://www.lyceum-6.edusite.ru/p1aa1.html" },
+                { text: "Победа в 'Учитель года 2025'", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "День здоровья 25 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "Выставка проектов 30 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "Обновление кабинета алтайского языка", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" }
+            ];
+            initialNews.forEach(news => newsRef.push(news));
         }
         updateTickerContent();
-    }, (error) => {
-        console.error('Ошибка Firebase:', error);
-        alert('Ошибка подключения к Firebase. Использую локальные новости.');
-        tickerContent.innerHTML = '';
-        localNews.forEach(news => {
-            const h3 = document.createElement('h3');
-            h3.innerHTML = `<a href="${news.link}" target="_blank">${news.text}${getRandomClickbait()}</a>`;
-            tickerContent.appendChild(h3);
-        });
-        updateTickerContent();
+        updateNewsList();
     });
 }
 
@@ -94,7 +76,7 @@ function toggleTheme() {
     }
 }
 
-// Открытие вкладок (как раньше)
+// Открытие вкладок
 function openTab(event, tabId, group) {
     const tabContents = document.querySelectorAll(`#${group} .tab-content`);
     const tabButtons = document.querySelectorAll(`#${group} .tab-btn`);
@@ -143,7 +125,7 @@ function closeLoginForm() {
     document.body.classList.remove('popup-active');
 }
 
-// Логин администратора (упрощённый вход)
+// Логин администратора
 function login() {
     const email = document.getElementById('loginInput').value.trim();
     const password = document.getElementById('passwordInput').value.trim();
@@ -151,22 +133,30 @@ function login() {
 
     if (!email || !password) return alert('Пожалуйста, введите email и пароль!');
 
-    // Упрощённый вход для теста
-    if (email === 'admin' && password === '123') {
-        isAdminLoggedIn = true;
-        closeLoginForm();
-        document.getElementById('adminPanel').classList.add('active');
-        document.querySelector('.login-btn').style.display = 'none';
-        makeDraggableAndResizable(document.getElementById('adminPanel'));
-        updateNewsList();
-        return;
-    }
-
-    alert('Упрощённый вход не работает. Зарегистрируйте пользователя в Firebase Console (например, admin@lyceum-6.ru) и используйте его email/пароль.');
-    console.log('Попытка входа:', email, password);
+    auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+            auth.setPersistence(rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+            isAdminLoggedIn = true;
+            closeLoginForm();
+            document.getElementById('adminPanel').classList.add('active');
+            document.querySelector('.login-btn').style.display = 'none';
+            makeDraggableAndResizable(document.getElementById('adminPanel'));
+            updateNewsList();
+        })
+        .catch(error => {
+            let errorMessage = 'Ошибка входа: ';
+            switch (error.code) {
+                case 'auth/invalid-email': errorMessage += 'Неверный формат email.'; break;
+                case 'auth/user-not-found': errorMessage += 'Пользователь не найден.'; break;
+                case 'auth/wrong-password': errorMessage += 'Неверный пароль.'; break;
+                default: errorMessage += error.message;
+            }
+            alert(errorMessage);
+            console.error('Ошибка входа:', error);
+        });
 }
 
-// Задать вопрос
+// Добавление функции для вопроса
 function submitQuestion() {
     const question = document.querySelector('.question-form textarea').value;
     if (question) alert('Вопрос отправлен: ' + question);
@@ -179,8 +169,7 @@ function addNews() {
     const newsText = document.getElementById('newsText').value.trim();
     const newsLink = document.getElementById('newsLink').value.trim();
     if (!newsText || !newsLink) return alert('Введите текст новости и ссылку!');
-    localNews.push({ text: newsText, link: newsLink }); // Добавление в локальный массив
-    loadNews(); // Перезагрузка новостей
+    newsRef.push({ text: newsText, link: newsLink });
     document.getElementById('newsText').value = '';
     document.getElementById('newsLink').value = '';
 }
@@ -191,8 +180,8 @@ function deleteNews() {
     const newsList = document.getElementById('newsList');
     const selectedIndex = newsList.selectedIndex;
     if (selectedIndex === -1) return alert('Выберите новость для удаления!');
-    localNews.splice(selectedIndex, 1); // Удаление из локального массива
-    loadNews(); // Перезагрузка новостей
+    const itemId = newsItems[selectedIndex].dataset.id;
+    newsRef.child(itemId).remove();
 }
 
 // Обновление содержимого тикера
@@ -205,10 +194,10 @@ function updateTickerContent() {
 function updateNewsList() {
     const newsList = document.getElementById('newsList');
     newsList.innerHTML = '';
-    localNews.forEach((news, index) => {
+    newsItems.forEach((item, index) => {
         const option = document.createElement('option');
         option.value = index;
-        option.textContent = news.text;
+        option.textContent = item.textContent.replace(/ — .+?$/, '').trim();
         newsList.appendChild(option);
     });
 }
@@ -251,7 +240,7 @@ function makeDraggableAndResizable(element) {
     };
 }
 
-// Переключение боковых панелей
+// Добавление функции для переключения боковых панелей
 function toggleSidebar(id) {
     document.getElementById(id).classList.toggle('active');
 }
@@ -260,12 +249,12 @@ function toggleSidebar(id) {
 document.addEventListener('DOMContentLoaded', () => {
     const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3', 'tab-group-4', 'tab-group-5'];
     groups.forEach(group => document.querySelector(`#${group} .tab-btn`).click());
-    loadNews(); // Загрузка новостей
+    loadNewsFromFirebase();
     auth.onAuthStateChanged(user => {
         isAdminLoggedIn = !!user;
         const adminPanel = document.getElementById('adminPanel');
         const loginBtn = document.querySelector('.login-btn');
-        if (isAdminLoggedIn) {
+        if (user) {
             adminPanel.classList.add('active');
             loginBtn.style.display = 'none';
             makeDraggableAndResizable(adminPanel);
