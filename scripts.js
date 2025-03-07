@@ -60,7 +60,8 @@ function loadNewsFromFirebase() {
         }
         cache.tickerContent.innerHTML = '';
         cache.tickerContent.appendChild(fragment);
-        updateTickerContent(); // Добавляем дублирование контента
+        updateTickerContent();
+        cache.ticker.scrollLeft = 0;
         updateNewsList();
     }, (error) => {
         console.error('Ошибка загрузки новостей:', error);
@@ -177,8 +178,8 @@ function addNews() {
 
 function updateTickerContent() {
     const currentContent = cache.tickerContent.innerHTML;
-    cache.tickerContent.innerHTML = currentContent + currentContent; // Возвращаем дублирование контента
-    cache.ticker.scrollLeft = 0;
+    cache.tickerContent.innerHTML = currentContent + currentContent; // Дублируем контент
+    cache.ticker.scrollLeft = 0; // Сбрасываем прокрутку
 }
 
 function updateNewsList() {
@@ -232,4 +233,12 @@ function makeDraggableAndResizable(element) {
         document.onmouseup = null;
         document.onmousemove = null;
     }
+}
+
+function closeWelcomePopup() {
+    closePopup();
+}
+
+function closeLoginForm() {
+    closePopup();
 }
