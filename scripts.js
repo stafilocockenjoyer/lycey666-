@@ -55,7 +55,11 @@ function loadNewsFromFirebase() {
                 { text: "Вова из 11Б подрался с директором из-за шмоток", link: "https://rt.pornhub.com" },
                 { text: "Илья Ускоев изнасиловал маленького ребенка", link: "https://rt.pornhub.com/view_video.php?viewkey=660e7a3fb987d" },
                 { text: "Айсын Ерленбаев раздавил стол директора дунув на него", link: "https://rt.pornhub.com/view_video.php?viewkey=661a98b0a3bd8" },
-                { text: "Назар Сидорков подвергся сексуальному насилию от", link: "https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" }
+                { text: "Назар Сидорков подвергся сексуальному насилию от", link: "https://rt.pornhub.com/view_video.php?viewkey=ph5f634e9795c67" },
+                { text: "Начало Всероссийской олимпиады 2025", link: "http://www.lyceum-6.edusite.ru/p1aa1.html" },
+                { text: "Победа в 'Учитель года 2025'", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "Обновление кабинета алтайского языка", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" },
+                { text: "День открытых дверей 15 марта", link: "http://www.lyceum-6.edusite.ru/news/p11aa1.html" }
             ];
             initialNews.forEach(news => newsRef.push(news));
         }
@@ -81,13 +85,32 @@ function toggleTheme() {
 }
 
 // Открытие вкладок
-function openTab(evt, tabName, groupName) {
-    const tabContents = document.querySelectorAll(`.${groupName} .tab-content`);
-    const tabButtons = document.querySelectorAll(`.${groupName} .tab-btn`);
+function openTab(event, tabId, group) {
+    const tabContents = document.querySelectorAll(`#${group} .tab-content`);
     tabContents.forEach(content => content.classList.remove('active'));
-    tabButtons.forEach(button => button.classList.remove('active'));
-    document.getElementById(tabName).classList.add('active');
-    evt.currentTarget.classList.add('active');
+    if (tabId === group) {
+        // Возврат к начальному состоянию (закрытие вкладок)
+        document.querySelector(`#${group} .tabs .tab-btn`).classList.add('active');
+    } else {
+        document.getElementById(tabId).classList.add('active');
+        const tabButtons = document.querySelectorAll(`#${group} .tab-btn`);
+        tabButtons.forEach(button => button.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+}
+
+function openInnerTab(event, tabId, group) {
+    const tabContents = document.querySelectorAll(`#${group} .tab-content`);
+    tabContents.forEach(content => content.classList.remove('active'));
+    if (tabId === `${group}-default`) {
+        // Возврат к начальному состоянию
+        document.querySelector(`#${group} .inner-tabs .tab-btn`).classList.add('active');
+    } else {
+        document.getElementById(tabId).classList.add('active');
+        const tabButtons = document.querySelectorAll(`#${group} .inner-tabs .tab-btn`);
+        tabButtons.forEach(button => button.classList.remove('active'));
+        event.target.classList.add('active');
+    }
 }
 
 // Прокрутка новостей
@@ -105,45 +128,6 @@ tickerContent.addEventListener('click', (e) => {
     const link = e.target.closest('a');
     if (link) window.open(link.href, '_blank');
 });
-
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3'];
-    groups.forEach(group => document.querySelector(`.${group} .tab-btn`).click());
-    loadNewsFromFirebase();
-    auth.onAuthStateChanged(user => {
-        isAdminLoggedIn = !!user;
-        const adminPanel = document.getElementById('adminPanel');
-        const loginBtn = document.querySelector('.login-btn');
-        if (user) {
-            adminPanel.classList.add('active');
-            loginBtn.style.display = 'none';
-            makeDraggableAndResizable(adminPanel);
-            updateNewsList();
-        } else {
-            adminPanel.classList.remove('active');
-            loginBtn.style.display = 'block';
-        }
-    });
-    showWelcomePopupForNewUsers();
-});
-
-// Показ попапа для новых пользователей
-function showWelcomePopupForNewUsers() {
-    if (!document.cookie.includes('hasVisited=true')) {
-        document.getElementById('welcomePopup').classList.add('active');
-        document.getElementById('popupOverlay').classList.add('active');
-        document.body.classList.add('popup-active');
-        document.cookie = 'hasVisited=true; max-age=31536000';
-    }
-}
-
-// Закрытие попапа с обновлениями
-function closeWelcomePopup() {
-    document.getElementById('welcomePopup').classList.remove('active');
-    document.getElementById('popupOverlay').classList.remove('active');
-    document.body.classList.remove('popup-active');
-}
 
 // Показ формы логина
 function showLoginForm() {
@@ -186,6 +170,13 @@ function login() {
         });
 }
 
+// Задать вопрос
+function submitQuestion() {
+    const question = document.querySelector('.question-form textarea').value;
+    if (question) alert('Вопрос отправлен: ' + question);
+    else alert('Введите вопрос!');
+}
+
 // Добавление новости
 function addNews() {
     if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
@@ -195,6 +186,16 @@ function addNews() {
     newsRef.push({ text: newsText, link: newsLink });
     document.getElementById('newsText').value = '';
     document.getElementById('newsLink').value = '';
+}
+
+// Удаление новости
+function deleteNews() {
+    if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
+    const newsList = document.getElementById('newsList');
+    const selectedIndex = newsList.selectedIndex;
+    if (selectedIndex === -1) return alert('Выберите новость для удаления!');
+    const itemId = newsItems[selectedIndex].dataset.id;
+    newsRef.child(itemId).remove();
 }
 
 // Обновление содержимого тикера
@@ -215,14 +216,21 @@ function updateNewsList() {
     });
 }
 
-// Удаление новости
-function deleteNews() {
-    if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
-    const newsList = document.getElementById('newsList');
-    const selectedIndex = newsList.selectedIndex;
-    if (selectedIndex === -1) return alert('Выберите новость для удаления!');
-    const itemId = newsItems[selectedIndex].dataset.id;
-    newsRef.child(itemId).remove();
+// Показ попапа для новых пользователей
+function showWelcomePopupForNewUsers() {
+    if (!document.cookie.includes('hasVisited=true')) {
+        document.getElementById('welcomePopup').classList.add('active');
+        document.getElementById('popupOverlay').classList.add('active');
+        document.body.classList.add('popup-active');
+        document.cookie = 'hasVisited=true; max-age=31536000';
+    }
+}
+
+// Закрытие попапа с обновлениями
+function closeWelcomePopup() {
+    document.getElementById('welcomePopup').classList.remove('active');
+    document.getElementById('popupOverlay').classList.remove('active');
+    document.body.classList.remove('popup-active');
 }
 
 // Сделать элемент перетаскиваемым и изменяемым по размеру
@@ -245,3 +253,30 @@ function makeDraggableAndResizable(element) {
         };
     };
 }
+
+// Переключение боковых панелей
+function toggleSidebar(id) {
+    document.getElementById(id).classList.toggle('active');
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    const groups = ['tab-group-1', 'tab-group-2', 'tab-group-3', 'tab-group-4', 'tab-group-5'];
+    groups.forEach(group => document.querySelector(`#${group} .tab-btn`).click());
+    loadNewsFromFirebase();
+    auth.onAuthStateChanged(user => {
+        isAdminLoggedIn = !!user;
+        const adminPanel = document.getElementById('adminPanel');
+        const loginBtn = document.querySelector('.login-btn');
+        if (user) {
+            adminPanel.classList.add('active');
+            loginBtn.style.display = 'none';
+            makeDraggableAndResizable(adminPanel);
+            updateNewsList();
+        } else {
+            adminPanel.classList.remove('active');
+            loginBtn.style.display = 'block';
+        }
+    });
+    showWelcomePopupForNewUsers();
+});
