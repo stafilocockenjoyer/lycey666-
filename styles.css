@@ -56,16 +56,16 @@ header h1 {
     flex-direction: column;
     position: relative;
     z-index: 1;
-    background: #333333;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 2px solid #404040;
+    background: #333333; /* Исходный фон тёмной темы */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Исходная тень */
+    border: 2px solid #404040; /* Исходная граница */
     border-radius: 10px;
     min-height: 100px;
     padding: 25px 60px;
 }
 
 body.light .news {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95); /* Исходный фон светлой темы */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border: 2px solid #a3bffa;
 }
@@ -73,11 +73,11 @@ body.light .news {
 .news h2 {
     margin-bottom: 15px;
     font-size: 2em;
-    color: #cccccc;
+    color: #cccccc; /* Исходный цвет заголовка в тёмной теме */
 }
 
 body.light .news h2 {
-    color: #6b7280;
+    color: #6b7280; /* Исходный цвет заголовка в светлой теме */
 }
 
 .news-ticker {
@@ -87,11 +87,11 @@ body.light .news h2 {
     flex-grow: 1;
     display: flex;
     align-items: flex-start;
-    border: 1px solid #404040;
+    border: 1px solid #404040; /* Добавляем границы для тёмной темы */
 }
 
 body.light .news-ticker {
-    border: 1px solid #a3bffa;
+    border: 1px solid #a3bffa; /* Границы для светлой темы */
 }
 
 .ticker-content {
@@ -109,9 +109,9 @@ body.light .news-ticker {
     100% { transform: translateX(-50%); }
 }
 
-.news-ticker a {
-    color: #e0e0e0;
-    background: #404040;
+body.dark .news-ticker a {
+    color: #e0e0e0; /* Исходный цвет текста в тёмной теме */
+    background: #404040; /* Исходный фон в тёмной теме */
     padding: 15px 20px;
     border-radius: 15px;
     margin-right: 15px;
@@ -123,14 +123,14 @@ body.light .news-ticker {
     font-size: 1.4em;
 }
 
-.news-ticker a:hover {
-    color: #ffffff;
-    background: #4d4d4d;
+body.dark .news-ticker a:hover {
+    color: #ffffff; /* Исходный цвет при наведении */
+    background: #4d4d4d; /* Исходный фон при наведении */
 }
 
 body.light .news-ticker a {
-    color: #4a5e6e;
-    background: rgba(163, 191, 250, 0.2);
+    color: #4a5e6e; /* Исходный цвет текста в светлой теме */
+    background: rgba(163, 191, 250, 0.2); /* Исходный фон в светлой теме */
 }
 
 body.light .news-ticker a:hover {
@@ -454,8 +454,8 @@ body.light .login-btn:hover {
     margin-bottom: 10px;
     border: 1px solid #555555;
     border-radius: 5px;
-    background: #333333 !important;
-    color: #e0e0e0 !important;
+    background: #333333 !important; /* Усиливаем приоритет */
+    color: #e0e0e0 !important; /* Усиливаем приоритет */
     font-size: 0.9em;
     appearance: none;
     -webkit-appearance: none;

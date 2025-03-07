@@ -178,8 +178,8 @@ function addNews() {
 
 function updateTickerContent() {
     const currentContent = cache.tickerContent.innerHTML;
-    cache.tickerContent.innerHTML = currentContent + currentContent; // Дублируем контент
-    cache.ticker.scrollLeft = 0; // Сбрасываем прокрутку
+    cache.tickerContent.innerHTML = currentContent + currentContent;
+    cache.ticker.scrollLeft = 0;
 }
 
 function updateNewsList() {
