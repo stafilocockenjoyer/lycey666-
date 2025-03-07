@@ -156,13 +156,6 @@ function login() {
         });
 }
 
-// Добавление функции для вопроса
-function submitQuestion() {
-    const question = document.querySelector('.question-form textarea').value;
-    if (question) alert('Вопрос отправлен: ' + question);
-    else alert('Введите вопрос!');
-}
-
 // Добавление новости
 function addNews() {
     if (!isAdminLoggedIn) return alert('Войдите в админ-панель для редактирования!');
@@ -238,11 +231,6 @@ function makeDraggableAndResizable(element) {
             element.style.left = (element.offsetLeft - pos1) + "px";
         };
     };
-}
-
-// Добавление функции для переключения боковых панелей
-function toggleSidebar(id) {
-    document.getElementById(id).classList.toggle('active');
 }
 
 // Инициализация при загрузке страницы
